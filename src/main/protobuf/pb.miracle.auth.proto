@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+message Wrapper {
+  oneof msg {
+    TokenLogin tokenLogin = 2;
+    TokenLoginSuccess loginSuccess = 3;
+    TokenLoginFailure loginFailure = 4;
+    TokenLogout tokenLogout = 5;
+  }
+}
+
+message TokenLogin {
+  string uuid = 1;
+  string token = 2;
+}
+
+message TokenLoginSuccess {
+  int32 code = 1;
+  string result = 2;
+}
+
+message TokenLoginFailure {
+  int32 code = 1;
+  string result = 2;
+}
+
+message TokenLogout {
+  int32 code = 1;
+  string result = 2;
+}

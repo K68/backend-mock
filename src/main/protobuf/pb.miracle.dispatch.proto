@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+message DispatchWrapper {
+    oneof msg {
+        RoomDispatch dispatch = 1;
+        DispatchResult result = 2;
+        LiveRoom liveRoom = 3;
+        InviteRoom ivtRoom = 4;
+    }
+}
+
+message RoomDispatch {
+    int32 spaceNew = 1;
+    string meta = 2;
+    repeated string excludes = 3;
+}
+
+message DispatchResult {
+    bool ok = 1;
+    string room = 2;
+}
+
+message LiveRoom {
+    int32 theSpace = 1;
+    string theMeta = 2;
+    string theRoom = 3;
+    string remark = 4;
+    int64 timestamp = 5;
+}
+
+message InviteRoom {
+    int32 theSpace = 1;
+    string theMeta = 2;
+    string theRoom = 3;
+    string remark = 4;
+    int64 timestamp = 5;
+    string fromUuid = 6;
+    string fromName = 7;
+    string fromFace = 8;
+}
+
+
+
+
+
+
+
+
+
+

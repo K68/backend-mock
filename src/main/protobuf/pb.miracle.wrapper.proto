@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+message MiracleWrapperMessage {
+  int32 space = 1;
+  string fromId = 2;
+  int32 fromType = 3;
+  string toId = 4;
+  int32 toType = 5;
+  bytes value = 6;
+}
+
+// space 取值范围
+// 0 auth
+// 1 ping & pong
+// 404 房间发给人，没找到人，返回给房间的特殊 space 情况
+// 1000 RoomDispatch
+// > 1000 games
+// 1001
+// 1002
+
+
