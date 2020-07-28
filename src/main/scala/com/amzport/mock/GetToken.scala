@@ -4,7 +4,9 @@ import play.api.libs.json.Json
 
 
 object GetToken extends App {
-  postJson("http://192.168.5.81:8010/api/auth/login",
+  var uuid: String = ""
+  var token: String = ""
+  postJson("http://192.168.5.30:9000/api/auth/login",
     Json.obj("phoneNumber"->"110","loginPassword"->"111","logoutOthers"->true)
   )().map {
     case Left(e) =>
@@ -15,7 +17,9 @@ object GetToken extends App {
         println(222)
         println(Json.stringify(res))
         val authMeta = (res \ "authMeta").as[AuthMeta]
+        uuid = authMeta.accountId.toString
         val authenticationToken = (res \ "Authentication-Token").as[String]
+        token = authenticationToken
         val authenticationRefreshToken = (res \ "Authentication-Refresh-Token").as[String]
         println(authMeta)
         println(authenticationToken, authenticationRefreshToken)
