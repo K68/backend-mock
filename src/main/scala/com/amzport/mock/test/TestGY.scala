@@ -1,13 +1,27 @@
 package com.amzport.mock.test
 
 import com.amzport.mock.MPB.FlowMeta
+import com.amzport.mock.space.Mock1000
 import com.amzport.mock.{MPB, MockLog, MockUser, MockWeb}
 import pb.chatwrapper.WrapperChatMessage
 import pb.inoutroomwrapper.WrapperInOutRoomMessage
+import pb.miracle.dispatch._
 
 object TestGY extends App {
 
   MockUser.setupMockUser("111", "111", "http://127.0.0.1:9000/api/auth/login", "ws://127.0.0.1:9000/wsz")
+  MockUser.observe(999, (space, meta, value) => {
+    // TODO
+
+  })
+
+  // MockSpaceXX 的参考用法
+  Mock1000.observe((flowMeta, msg) => {
+    msg match {
+      case x: DispatchResult =>
+      case x: InviteRoom =>
+    }
+  })
 
   MockWeb.setupMockWeb("0.0.0.0")
   MockWeb.observe("1001", (_, m) =>
