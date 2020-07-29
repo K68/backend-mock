@@ -6,7 +6,7 @@ import pb.buyuwrapper.WrapperBuyuMessage
 
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext
-object Mock1010 extends App {
+object Mock1010{
 
   case class BuYuCass(order: Int, buYuMess: WrapperBuyuMessage)
   var buYuList = List.empty[BuYuCass]
@@ -21,8 +21,6 @@ object Mock1010 extends App {
     val buYuInviteConfirmMessage = WrapperBuyuMessage().withBuYuInviteConfirm(buYuInviteConfirm)
     buYuList = buYuList ++: List(BuYuCass(1, buYuInviteConfirmMessage))
   }
-
-  //MockUser.send(buYuList)
 
 }
 
