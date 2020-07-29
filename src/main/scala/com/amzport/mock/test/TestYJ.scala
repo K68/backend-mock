@@ -1,23 +1,43 @@
 package com.amzport.mock.test
 
-import com.amzport.mock.{MockUser, MockWeb}
+import com.amzport.mock.MPB.FlowMeta
+import com.amzport.mock.space.Mock1000
+import com.amzport.mock.{MPB, MockLog, MockUser, MockWeb}
+import pb.buyu.BuYuLoginInfo
 import pb.buyuwrapper.WrapperBuyuMessage
+import pb.miracle.dispatch.{DispatchWrapper, InviteRoom, RoomDispatch}
 
 object TestYJ extends App {
 
-  MockUser.setupMockUser("112", "111", "http://127.0.0.1:9007/api/auth/login", "ws://127.0.0.1:9007/wsz")
-
+  MockUser.setupMockUser("111", "111", "http://127.0.0.1:9007/api/auth/login", "ws://127.0.0.1:9007/wsz")
   MockWeb.setupMockWeb("0.0.0.0")
-
-  MockWeb.observe("333", (_, m) =>
-    //URL: http://127.0.0.1:9999/1001?msg=UserIntoChat&userId=?&roomId=?
+  //邀请好友
+  MockWeb.observe("1010", (_, m) =>
+    //URL: http://127.0.0.1:9999/1010?BuYu=BuYuInv&theMeta=?theSpace=?&fromId=?&fromType=?&toId=?&toType=?&remark=?&timestamp=?&fromUuid=?&fromName=?&fromFace=?
     m("BuYu") match {
       case "BuYuInv" =>
-        val buYuInvitePlayer = pb.buyu.BuYuInvitePlayer(1, 2, 3)
-        val buYuInvitePlayerMessage = WrapperBuyuMessage().withBuYuInvitePlayer(buYuInvitePlayer)
-
+        val flowMeta = FlowMeta(m("theSpace").toInt, m("fromId"), m("fromType").toInt, m("toId"), m("toType").toInt)
+        val inviteRoom = pb.miracle.dispatch.InviteRoom(m("theSpace").toInt, m("theMeta"), m("toId"), m("remark"), m("timestamp").toLong, m("fromUuid"), m("fromName"), m("fromFace"))
+        val buYuIvtRoom = DispatchWrapper().withIvtRoom(inviteRoom)
+        MockUser.send(MPB.toByte(flowMeta, buYuIvtRoom))
+        MockLog.debug(s"${inviteRoom}", m("theSpace").toInt)
       case "BuYuDebug" =>
+        MockLog.debug(s"${m("code2")}", 1010)
+
+      case "BuYuLogin" =>
+      //URL: http://127.0.0.1:9999/1010?BuYu=BuYuLogin&theMeta=?&theSpace=?&fromId=?&fromType=?&toId=?&toType=?&ClientID=?&Seat=?
+        val flowMeta = FlowMeta(m("theSpace").toInt, m("fromId"), m("fromType").toInt, m("toId"), m("toType").toInt)
+        val buYuLoginInfo = pb.buyu.BuYuLoginInfo(m("ClientID").toLong, m("Seat").toInt)
+        val buYuLoginInfoMess = WrapperBuyuMessage().withBuYuLoginInfo(buYuLoginInfo)
+        MockUser.send(MPB.toByte(flowMeta, buYuLoginInfoMess))
+        MockLog.debug(s"${buYuLoginInfoMess}", m("theSpace").toInt)
+      case "BuYuUserLogin" =>
+        //URL: http://127.0.0.1:9999/1010?BuYu=BuYuUserLogin&userName=?
+      MockUser.setupMockUser("111", "111", "http://127.0.0.1:9007/api/auth/login", "ws://127.0.0.1:9007/wsz")
+
 
     }
   )
+
+
 }
