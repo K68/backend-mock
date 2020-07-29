@@ -1,6 +1,7 @@
 package com.amzport.mock
 
 import akka.http.scaladsl.model.ws.{BinaryMessage, TextMessage}
+import play.api.libs.json.Json
 
 import scala.concurrent.duration._
 
@@ -12,7 +13,7 @@ object Test extends App {
   import system.dispatcher
 
   var count = 1
-  val outActor = MockSystem.setupMock("ws://127.0.0.1:9000/ws",
+  val outActor = MockSystem.setupMock("ws://echo.websocket.org",
     (message, out) => {
       message match {
         case msg: BinaryMessage.Strict =>
