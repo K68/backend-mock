@@ -13,6 +13,7 @@ message MiracleWrapperMessage {
 // 0 auth
 // 1 ping & pong
 // 404 房间发给人，没找到人，返回给房间的特殊 space 情况
+// 999
 // 1000 RoomDispatch
 // > 1000 games
 // 1001
