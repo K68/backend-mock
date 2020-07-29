@@ -26,6 +26,7 @@ object TestGY extends App {
 
   MockWeb.observe("999", (_, m) =>
     m("msg") match {
+      //查询房间信息
       case "RoomInfoGet" => //URL: http://127.0.0.1:9999/999?msg=RoomInfoGet&userId=?&space=?
         val userId = m("userId")
         val space = m("space")
