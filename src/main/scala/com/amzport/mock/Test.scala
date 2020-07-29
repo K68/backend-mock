@@ -40,27 +40,37 @@ object Test extends App {
     outActor ! TextMessage("TextMessage after 7.seconds")
   }
 
-    MockHTTP.get("http://www.baidu.com")().map{
-      case Left(e) =>
-        println(e.getMessage)
-      case Right(v) =>
-        MockHTTP.rspEntityString(v.entity).map { res =>
-          println(res)
-        }
-    }
+  /*
+  MockHTTP.get("http://www.baidu.com")().map{
+    case Left(e) =>
+      println(e.getMessage)
+    case Right(v) =>
+      MockHTTP.rspEntityString(v.entity).map { res =>
+        println(res)
+      }
+  }
+  */
 
-    MockHTTP.postJson("https://reqres.in/api/users",
-      Json.obj("name" -> "Welcome", "job" -> "Leader")
-    )().map {
-      case Left(e) =>
-        println(e.getMessage)
-      case Right(v) =>
-        MockHTTP.rspEntityJson(v.entity).map { res =>
-          val id = (res \ "id").as[String]
-          val time = (res \ "createdAt").as[String]
-          println(id, time)
-          println(Json.stringify(res))
-        }
-    }
+  MockHTTP.postJson("https://reqres.in/api/users",
+    Json.obj("name" -> "Welcome", "job" -> "Leader")
+  )().map {
+    case Left(e) =>
+      println(e.getMessage)
+    case Right(v) =>
+      MockHTTP.rspEntityJson(v.entity).map { res =>
+        val id = (res \ "id").as[String]
+        val time = (res \ "createdAt").as[String]
+        println(id, time)
+        println(Json.stringify(res))
+      }
+  }
+
+  MockLog.error("66666666666")
+  MockLog.debug("77777777777")
+  MockLog.info("88888888888")
+  MockLog.warn("99999999999")
+
+  MockWeb.setupMockWeb("0.0.0.0")
+  MockWeb.observe("333", (_, m) => println(m))
 
 }

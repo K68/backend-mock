@@ -18,8 +18,8 @@ object MockSystem {
   implicit val system: ActorSystem = ActorSystem()
   import system.dispatcher
 
-  final val MockCompletion = TextMessage("Completion")
-  final val MockFailure = TextMessage("Failure")
+  final private val MockCompletion = TextMessage("Completion")
+  final private val MockFailure = TextMessage("Failure")
 
   def setupMock(wsURL: String,
                 receive: (Message, ActorRef[Message]) => Unit,
