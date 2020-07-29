@@ -39,27 +39,27 @@ object Test extends App {
     outActor ! TextMessage("TextMessage after 7.seconds")
   }
 
-//  MockHTTP.get("http://www.baidu.com")().map{
-//    case Left(e) =>
-//      println(e.getMessage)
-//    case Right(v) =>
-//      MockHTTP.rspEntityString(v.entity).map { res =>
-//        println(res)
-//      }
-//  }
-//
-//  MockHTTP.postJson("https://reqres.in/api/users",
-//    Json.obj("name" -> "Welcome", "job" -> "Leader")
-//  )().map {
-//    case Left(e) =>
-//      println(e.getMessage)
-//    case Right(v) =>
-//      MockHTTP.rspEntityJson(v.entity).map { res =>
-//        val id = (res \ "id").as[String]
-//        val time = (res \ "createdAt").as[String]
-//        println(id, time)
-//        println(Json.stringify(res))
-//      }
-//  }
+    MockHTTP.get("http://www.baidu.com")().map{
+      case Left(e) =>
+        println(e.getMessage)
+      case Right(v) =>
+        MockHTTP.rspEntityString(v.entity).map { res =>
+          println(res)
+        }
+    }
+
+    MockHTTP.postJson("https://reqres.in/api/users",
+      Json.obj("name" -> "Welcome", "job" -> "Leader")
+    )().map {
+      case Left(e) =>
+        println(e.getMessage)
+      case Right(v) =>
+        MockHTTP.rspEntityJson(v.entity).map { res =>
+          val id = (res \ "id").as[String]
+          val time = (res \ "createdAt").as[String]
+          println(id, time)
+          println(Json.stringify(res))
+        }
+    }
 
 }
