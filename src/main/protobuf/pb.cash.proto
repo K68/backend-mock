@@ -1,0 +1,154 @@
+syntax = "proto3";
+
+//用户离开 前端发我
+message CashUserStandUp
+{
+    int64 UserID = 1;          //用户ID
+}
+
+message CashError {
+    string ErrorCode = 1;
+}
+
+message UserRank {
+    int64 UserID = 1;          //用户ID
+    int32 rank = 2;            //用户排名
+}
+
+message CashMessageBack {
+    string action = 1;
+    string uuid = 2;
+    CashRoomState roomState = 3;
+    int32 seat = 4;
+    int64 deckCount = 5;
+    int64 tableBornTime = 6;
+    int64 tableStartTime = 7;
+}
+
+message CashRoomState {
+    string status = 1;
+    repeated CashSeatState cashSeatState = 2;
+    int32 btn = 3;
+    CashPotPool mainPot = 4;
+    repeated CashPotPool sidePot = 5;
+    CashFlopCard publicCard = 6;
+    CashCard turnCard = 7;
+    CashCard riverCard = 8;
+    CashTableActionLimit cashTableActionLimit = 9;
+}
+
+message CashSeatState {
+    string status = 1;
+    CashUserState userState = 2;
+    CashHoleCard CashHoleCard = 3;
+    bool isALLIn = 4;
+    int64 stack = 5;
+    int64 inPot = 6;
+    int64 roundPot = 7;
+    string hands = 8;
+    repeated int64 winPot = 9;
+    repeated CashCard winHand = 10;
+}
+
+message CashUserState {
+    string stu = 1;
+    string uuid = 2;
+}
+
+message CashPotPool {
+    repeated int32 seats = 1;
+    int64 pot = 2;
+}
+
+message CashFlopCard {
+    CashCard publicCardL = 1;
+    CashCard publicCardM = 2;
+    CashCard publicCardR = 3;
+}
+
+message CashTableActionLimit {
+    string action = 1;
+    int64 call = 2;
+    int64 min = 3;
+    int64 max = 4;
+    int32 raiseCount = 5;
+}
+
+message CashCard {
+    string var1 = 1;
+    string var2 = 2;
+    float sortPoint = 3;
+}
+
+message CashHoleCard {
+    CashCard l = 1;
+    CashCard r = 2;
+}
+
+message MessageHole {
+    string action = 1;
+    string uuid = 2;
+    CashHoleCard cashHoleCard = 3;
+    int32 seat = 4;
+}
+
+message CashRoomActionMsg {
+    string action = 1;
+    string uuid = 2;
+    int64 timestamp = 3;
+    int64 chips = 4;
+}
+
+message CashTableActionMsg {
+    string action = 1;
+    string uuid = 2;
+    int64 timestamp = 3;
+    int64 chips = 4;
+}
+
+message CashOtherState{                 //房间内别人的状态改变
+    int64 OutId = 1;                    //状态改变人的Id
+    CashInfoList cashInfoList = 2;      //玩家信息列表
+}
+
+message CashInfoList {
+    repeated CashInfo CashInfo = 1;
+}
+message CashInfo {
+    int64 ClientID = 1;
+    string username = 2;
+    int64 coinScore = 3;
+    string avatar = 4;
+    int32 State = 5;                //状态0： 在线，1： 离线
+}
+
+message OutCashRoom { // 退出游戏房间
+    int64 ClientID = 1;
+}
+
+message CashInviteConfirm {          //确认是否被邀请
+    int64 InvitedId = 1;             //被邀请人id
+    int64 PlayerId = 2;              //邀请人id
+    bool IsAgree = 3;                //是否同意
+}
+
+message CashApplyFriendList {            //申请好友列表
+    int64 UserId = 1;
+}
+
+message CashInvitePlayer {
+    int64 PlayerId = 1;             //邀请人id
+    int64 InvitedId = 2;            //被邀请人id
+    int32 Seat = 3;                 //被邀请人座位
+}
+
+message CashFriendsList{
+    repeated CashFriend cashFriend = 1;    //好友信息列表
+}
+
+message CashFriend{
+    int64 PlayerId = 1;             //id
+    string PlayerName = 2;          //名字
+    string Head = 3;                //头像
+    int32 State = 4;                //状态  离线：0  空闲：1
+}

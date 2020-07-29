@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+import "pb.cash.proto";
+message WrapperCashMessage{
+    oneof msg {
+        CashUserStandUp cashUserStandUp = 1;
+        CashError cashError = 2;
+        UserRank userRank = 3;
+        CashMessageBack cashMessageBack = 4;
+        MessageHole messageHole = 5;
+        CashRoomActionMsg cashRoomActionMsg = 6;
+        CashTableActionMsg cashTableActionMsg = 7;
+        CashOtherState cashOtherState = 8;
+        CashInfo cashInfo = 9;
+        OutCashRoom outCashRoom = 10;
+        CashInviteConfirm cashInviteConfirm = 11;
+        CashApplyFriendList cashApplyFriendList = 12;
+        CashInvitePlayer cashInvitePlayer = 13;
+        CashFriendsList cashFriendsList = 14;
+    }
+}

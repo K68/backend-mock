@@ -1,0 +1,175 @@
+syntax = "proto3";
+
+//进入房间
+message UserIntoChat {
+    int64 UserID = 1;          //用户ID
+    int32 RoomId = 2;          //房间ID
+}
+//打开好友列表
+message OpenMyFriends {
+    int64 UserID = 1;          //用户ID
+}
+//展示好友列表
+message ShowMyFriends {
+    repeated GoodFriend Friend = 1;
+}
+
+message GoodFriend {
+    int64 UserID = 1;          //用户ID
+    string UserName = 2;       //用户昵称
+    string UserProfile = 3;    //用户头像
+    int32 Zt = 4;             //是否有未读信息 未读1 已读 0
+}
+//开始聊天
+message UserChatReceive {
+    int64 UserID = 1;          //用户ID
+    int64 FriendID = 2;       //好友ID/客服 /世界聊天FriendID = 0
+}
+//发送按钮（前端给我）
+message PressSend{
+    int64 UserID = 1;          //用户ID
+    int64 FriendID = 2;       //好友ID/客服/世界聊天FriendID = 0
+    string ChatInformation = 3;
+}
+//发送聊天信息（我给前端）
+message SendMessage {
+    int64 UserID = 1;          //用户ID
+    int64 FriendID = 2;       //好友ID/客服/世界聊天FriendID = 0
+    string ChatInformation = 3;
+    string SendTime = 4;
+}
+
+//历史记录
+message HistoryChatArray {
+    repeated HistoryChat historyChat = 1;
+}
+
+message HistoryChat {
+    string ChatInformation =1;
+    string SendTime =2;
+    int64 fromId = 3;
+    int64 toId = 4;
+}
+
+//搜索好友
+message FriendSearch{
+    int64 UserID = 1;          //用户ID
+    string SearchMessage = 2;
+}
+//删除好友
+message DeleteFriend {
+    int64 UserID = 1;          //用户ID
+    int64 FriendID = 2;        //好友ID
+}
+//赠送（还未完成）
+message SendMoney {
+    int64 UserID = 1;          //用户ID
+    int64 FriendID = 2;        //好友ID
+    int64 Mount = 3;
+}
+//打开申请好友列表
+message OpenApplyFriend {
+    int64 UserID = 1;          //用户ID
+}
+//展示申请好友列表
+message ShowApplyFriend{
+    repeated ApplyFriend Friend = 1;
+}
+
+message ApplyFriend{
+    int64 UserID = 1;          //用户ID
+    string UserName = 2;       //用户昵称
+    string UserProfile = 3;    //用户头像
+    int32 Zt = 4;             //状态 同意1 默认是0 拒绝2
+}
+//同意申请
+message AddFriend {
+    int64 UserID = 1;          //用户ID
+    int64 PeopleID = 2;        //陌生人ID
+}
+//拒绝申请
+message RefuseApply {
+    int64 UserID = 1;          //用户ID
+    int64 PeopleID = 2;        //陌生人ID
+}
+
+message OpenRecentPeople {
+    int64 UserID = 1;          //用户ID
+}
+
+message ShowRecentPeople {
+    repeated RecentPeople Friend = 1;
+}
+//展示近期玩家（未完成）
+message RecentPeople {
+    int64 UserID = 1;          //用户ID
+    string UserName = 2;       //用户昵称
+    string UserProfile = 3;    //用户头像
+    string Zt = 4;             //状态
+}
+//申请加为好友
+message ApplyAddFriend {
+    int64 UserID = 1;          //用户ID
+    int64 PeopleID = 2;        //陌生人ID
+}
+//搜索陌生人
+message SearchPeople {
+    string SearchMessage = 1;
+}
+
+message Tips
+{
+    int32 Tips = 1;         //提示信息 1.等级不够2.时间未到10秒间隔3.ID或昵称错误，请重新输入.4.5.6.7.8.9.10
+}
+
+message UserLeave {
+    int64 UserID = 1;          //用户ID
+}
+
+message AddFriendRsp{           //添加好友
+    int64 UserID = 1;          //用户ID
+    string UserName = 2;       //用户昵称
+    string UserProfile = 3;    //用户头像
+}
+
+message ChatError{
+    string Message = 1;
+}
+
+message Transfer{
+    int64 FromId = 1;
+    int64 ToId = 2;
+    int64 Amount = 3;
+}
+
+message TransferRsp{
+    int64 FromId = 1;          //用户ID
+    string UserName = 2;       //用户昵称
+    string UserProfile = 3;    //用户头像
+    int64 Amount = 4;
+    int64 Time = 5;
+}
+
+message WorldHistoryRsp{
+    int64 ChatId = 1;
+    string ChatInformation = 2;
+    string SendTime = 3;
+    int64 UserId = 4;
+    string Name = 5;
+    string Head = 6;
+}
+
+message WorldHistoryListRsp{
+    repeated WorldHistoryRsp WorldHistoryRsp = 1;
+}
+
+message WorldChatRsp{
+    int64 userId = 1;
+    int64 MessageId = 2;
+    string ChatMessage = 3;
+}
+
+message CycleQuery{
+    int64 ChatId = 1;
+    int64 userId = 2;
+}

@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+import "pb.buyu.proto";
+
+message WrapperBuyuMessage {
+    oneof msg {
+        LoginInfo loginInfo = 1;
+        CreateFishList createFishList = 2;
+        UserInfoList userInfoList = 3;
+        Arms arms = 4;
+        HitFish hitFish = 5;
+        FireBullets fireBullets = 6;
+        FishStatusList fishStatusList = 7;
+        SpecialBulletsList specialBulletsList = 8;
+        FireSpecialBullets fireSpecialBullets = 9;
+        ArmsMagnification armsMagnification = 10;
+        ReqArmsInfo reqArmsInfo = 11;
+        RspArmsInfo rspArmsInfo = 12;
+        ReqProps reqProps = 13;
+        RspSpawnFish rspSpawnFish = 14;
+        ReqRoomInfo reqRoomInfo = 15;
+        ReqTool reqTool = 16;
+        RspBattery rspBattery = 17;
+        FrozenFishList frozenFishList = 18;
+        RspBatteryList rspBatteryList = 19;
+        BuYuError buYuError = 20;
+        BuYuLoginInfo buYuLoginInfo = 21;
+        OutBuYuRoom outBuYuRoom = 22;
+        BuYuInviteConfirm buYuInviteConfirm = 23;
+        Battery battery = 24;
+        BuYuInvitePlayer buYuInvitePlayer = 25;
+        ArmsStyleProps armsStyleProps = 26;
+        ArmsBaseProps armsBaseProps = 27;
+        BuYuApplyFriendList buYuApplyFriendList = 28;
+        BuYuFriend buYuFriend = 29;
+        BuYuFriendsList buYuFriendsList = 30;
+        BuYuOtherState buYuOtherState = 31;
+        BuYuLockProps buYuLockProps = 32;
+        BuYuPropsTime buYuPropsTime = 33;
+    }
+}
