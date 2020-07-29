@@ -1,5 +1,5 @@
 package com.amzport.mock.space
 
-object MockUser {
+object Mock999 {
 
 }
