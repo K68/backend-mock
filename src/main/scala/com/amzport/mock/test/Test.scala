@@ -1,6 +1,7 @@
-package com.amzport.mock
+package com.amzport.mock.test
 
 import akka.http.scaladsl.model.ws.{BinaryMessage, TextMessage}
+import com.amzport.mock.{MockHTTP, MockLog, MockSystem, MockWeb}
 import play.api.libs.json.Json
 
 import scala.concurrent.duration._
