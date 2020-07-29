@@ -1,0 +1,233 @@
+syntax = "proto3";
+
+message LoginInfo {
+    int64 ClientID = 1;
+}
+
+message CreateFish {
+    int32 fishType = 1;
+    string fishID = 2;
+    bool isLive = 3;
+    string formulaX = 4;
+    string formulaY = 5;
+    int64 time = 6;
+    int64 deaTime = 7;
+}
+
+message UserInfo {
+    int64 clientID = 1;
+    string username = 2;
+    int64 coinScore = 3;
+    int32 armsStyle = 4;
+    int32 armsBase = 5;
+    int32 place = 6;
+    int64 magnification = 7; // 游戏初始化倍率
+    repeated Props props = 8;
+    int32 State = 9;                //状态0： 在线，1： 离线
+}
+
+message ArmsStyleProps {
+    int64 clientID = 1;
+    int32 armsStyle = 2;
+}
+
+message ArmsBaseProps {
+    int64 clientID = 1;
+    int32 armsBase = 2;
+
+}
+
+message Props {
+    int32 propLx = 1;
+    int32 propAmount = 2;
+}
+
+message Arms { // 大炮信息
+    int64 ClientID = 1;
+    int64 magnification = 2; // 倍率
+    double rotateZ = 3;
+    int32 armsState = 4; // 1 请求 2 允许发射  -1 不允许发射
+}
+
+message HitFish { // 击中鱼
+    int64 fishId = 1;
+    int64 bulletValue = 2;
+    int64 ClientID = 3;
+}
+
+message FishStatus { // 杀死死亡 2
+    int64 ClientID = 1;
+    int64 fishId = 2;
+    bool fishStatus = 3;
+    int32 ifSpecial = 4;
+    int64 gold = 5;
+    int64 balance = 6; // 余额
+}
+
+message FireBullets { //转发子弹信息
+    int64 ClientID = 1;
+    int64 bulletId = 2;
+    float bulletRotateZ = 3;
+    int64 magnification = 4;
+    int32 bulletState = 5;
+    double lineSpeed = 6;
+
+}
+
+message UserInfoList {
+    repeated UserInfo userInfo =1;
+}
+
+message CreateFishList {
+    repeated CreateFish createFish = 1;
+}
+
+message FishStatusList {
+    repeated FishStatus fishStatus = 1;
+}
+
+message SpecialBullets {
+    int64 ClientID = 1;
+    int64 bulletId = 2;
+    int64 magnification = 3;
+    int32 bulletState = 4;
+    int32 bulletType = 5;
+    int64 lifetime = 6;
+}
+message SpecialBulletsList {
+    repeated SpecialBullets specialBullets = 1;
+}
+
+message FireSpecialBullets {
+    int64 ClientID = 1;
+    int64 bulletId = 2;
+    float bulletRotateZ = 3;
+    int64 magnification = 4;
+    int32 bulletState = 5; // 1 发射， 2 开始转发
+    double lineSpeed = 6;
+    int64 startTime = 7;
+    int64 lifeTime = 8;
+    int32 bulletType = 9;
+    double bulletX = 10;
+    double bulletY = 11;
+}
+
+message ArmsMagnification { // 切换大炮的倍率
+    int64 ClientID = 1;
+    int64 magnification = 2; // 倍率
+}
+
+message ReqArmsInfo { // 请求大炮倍率
+    int64 ClientID = 1;
+}
+
+message RspArmsInfo { //发送给客户端大炮倍率
+    int64 ClientID = 1;
+    repeated string magnification = 2;
+}
+
+message ReqProps {
+    int64 ClientID = 1;
+    int32 propsType = 2; //  1  指定位置，随机生成鱼   2   道具冰冻所有鱼  3   闪电   4    加倍  5  锁定鱼
+}
+
+message RspSpawnFish {   //指定位置生成鱼
+    int64 ClientID = 1;
+    string formulaX = 2;
+    string formulaY = 3;
+    int64 time = 4;
+    int64 bornTime = 5;
+}
+
+message ReqRoomInfo { // 拉取用户信息
+    int64 ClientID = 1;
+}
+
+message ReqTool { // 请求工具
+    int64 ClientID = 1;
+    int32 propsType = 2;
+}
+
+message RspBattery { // 大炮类型
+    int64 batteryId = 1;
+    string batteryLv = 2;
+}
+
+message Battery { // 用户转发大炮的种类
+    int64 ClientID = 1;
+    int64 batteryId = 2;
+}
+
+message FrozenFish {   // 使用冰冻道具，冰冻了哪些鱼
+    int64 ClientID = 1;
+    int64 fishId = 2;
+    int64 bornTime = 3;
+    int64 endTime = 4;
+}
+
+message FrozenFishList { // 冰冻道具
+    repeated FrozenFish frozenFish = 1;
+}
+
+message RspBatteryList { // 大炮样式
+    repeated RspBattery rspBattery = 1;
+}
+
+message BuYuError {
+    string ErrorCode = 1;           //错误消息
+}
+
+message BuYuLoginInfo {
+    int64 ClientID = 1;
+    int32 Seat = 2;                 //座位号-1时为自然进入，不为-1时为被邀请进入
+}
+
+message OutBuYuRoom { // 退出游戏房间
+    int64 ClientID = 1;
+}
+
+message BuYuInviteConfirm {          //确认是否被邀请
+    int64 InvitedId = 1;             //被邀请人id
+    int64 PlayerId = 2;              //邀请人id
+    bool IsAgree = 3;                //是否同意
+}
+
+message BuYuApplyFriendList {            //申请好友列表
+    int64 UserId = 1;
+}
+
+message BuYuInvitePlayer {
+    int64 PlayerId = 1;             //邀请人id
+    int64 InvitedId = 2;            //被邀请人id
+    int32 Seat = 3;                 //被邀请人座位
+}
+
+message BuYuFriendsList{
+    repeated BuYuFriend buYuFriend = 1;    //好友信息列表
+}
+
+message BuYuFriend{
+    int64 PlayerId = 1;             //id
+    string PlayerName = 2;          //名字
+    string Head = 3;                //头像
+    int32 State = 4;                //状态  离线：0  空闲：1
+}
+
+message BuYuOtherState{                 //房间内别人的状态改变
+    int64 OutId = 1;                    //状态改变人的Id
+    UserInfoList userInfoList = 2;      //玩家信息列表
+}
+
+message BuYuLockProps {                 // 转发锁定道具锁定哪条鱼
+    int64 ClientID = 1;
+    int64 fishId = 2;
+    int64 bornTime = 3;
+    int64 endTime = 4;
+}
+
+message BuYuPropsTime {                  // 转发用户使用加倍道具,  4    加倍  5  锁定鱼 需发送 BuYuLockProps
+    int64 ClientID = 1;
+    int32 propsType = 2;
+    int64 bornTime = 3;
+    int64 endTime = 4;
+}

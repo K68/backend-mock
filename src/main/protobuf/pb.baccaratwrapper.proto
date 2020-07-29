@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+import "pb.baccarat.proto";
+
+message WrapperBaccaratMessage{
+    oneof msg {
+        UserSitDownReceive userSitDownReceive = 1;
+        UserSitDownSend userSitDownSend = 2;
+        UserItem userItem = 3;
+        UsersItem usersItem = 4;
+        TableCardArrayItem tableCardArrayItem = 5;
+        ApplyBankerReceive applyBankerReceive = 6;
+        ApplyBankerSend applyBankerSend = 7;
+        CancelBanker cancelBanker = 8;
+        ChangeBanker changeBanker = 9;
+        PlaceBetFail placeBetFail = 10;
+        PlaceBetReceive placeBetReceive = 11;
+        PlaceAllBetSend PlaceAllBetSend = 12;
+        PlaceBetSend placeBetSend = 13;
+        ContinueBet continueBet = 14;
+        StatusChang StatusChang = 15;
+        StatusFree StatusFree = 16;
+        StatusPlay StatusPlay = 17;
+        GameFree gameFree = 18;
+        GameStart gameStart = 19;
+        GameEnd gameEnd = 20;
+        TableCardArray tableCardArray =21;
+        PlayScore PlayScore = 22;
+        RecordRoadArrayInt recordRoadArrayInt = 23;
+        RecordRoadArrayString recordRoadArrayString = 24;
+        RecordRoadInt recordRoadInt= 25;
+        RecordRoadString recordRoadString= 26;
+        GameRecordReceive gameRecordReceive = 27;
+        GameRecordSend gameRecordSend = 28;
+        UserStandUp userStandUp = 29;
+        UserStateChange userStateChange = 30;
+        TipsMessage tipsMessage = 31;
+    }
+}

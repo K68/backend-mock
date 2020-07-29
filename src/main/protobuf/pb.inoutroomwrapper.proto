@@ -1,0 +1,14 @@
+syntax = "proto3";
+import "pb.inoutroom.proto";
+
+message WrapperInOutRoomMessage {
+  oneof msg {
+    RoomInfoGet roomInfoGet = 1;
+    RoomInfo roomInfo = 2;
+    RoomInfoReturn roomInfoReturn = 3;
+    IntoGameGet intoGameGet = 4;
+    IntoGameReturn intoGameReturn = 5;
+    UserInfoGet UserInfoGet = 6;
+    UserInfoReturn UserInfoReturn = 7;
+  }
+}

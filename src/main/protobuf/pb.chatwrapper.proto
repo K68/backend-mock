@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+import "pb.chat.proto";
+
+message WrapperChatMessage{
+    oneof msg {
+        UserIntoChat UserIntoChat = 1;
+        OpenMyFriends OpenMyFriends = 2;
+        ShowMyFriends ShowMyFriends = 3;
+        GoodFriend GoodFriend = 4;
+        UserChatReceive UserChatReceive = 5;
+        PressSend PressSend = 6;
+        SendMessage SendMessage = 7;
+        HistoryChatArray HistoryChatArray = 8;
+        HistoryChat HistoryChat = 9;
+        FriendSearch FriendSearch = 10;
+        DeleteFriend DeleteFriend = 11;
+        SendMoney SendMoney = 12;
+        OpenApplyFriend OpenApplyFriend = 13;
+        ShowApplyFriend ShowApplyFriend = 14;
+        ApplyFriend ApplyFriend = 15;
+        AddFriend AddFriend = 16;
+        RefuseApply RefuseApply = 17;
+        OpenRecentPeople OpenRecentPeople = 18;
+        ShowRecentPeople ShowRecentPeople = 19;
+        RecentPeople RecentPeople = 20;
+        ApplyAddFriend ApplyAddFriend = 21;
+        SearchPeople SearchPeople = 22;
+        Tips Tips = 23;
+        UserLeave UserLeave = 24;
+        AddFriendRsp AddFriendRsp = 25;
+        ChatError ChatError = 26;
+        Transfer Transfer = 27;
+        TransferRsp TransferRsp = 28;
+        WorldHistoryListRsp WorldHistoryListRsp = 29;
+        WorldChatRsp WorldChatRsp = 30;
+        CycleQuery CycleQuery = 31;
+    }
+}

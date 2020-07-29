@@ -1,0 +1,167 @@
+syntax = "proto3";
+
+message IntoClientRoom {            //用户进入房间
+    int64 ClientID = 1;             //客户Id
+    int32 Seat = 2;                 //座位号-1时为自然进入，不为-1时为被邀请进入
+}
+
+message Pattern {
+    int64 PatternId = 1;
+    string PatterName = 2;
+    int64 Space = 3;
+    int64 PatterValue1 = 4;
+    int64 PatterValue2 = 5;
+    int64 PatterValue3 = 6;
+    string PatternType = 7;
+    bool IsMatch = 8;
+}
+
+message Runner {                    //单个转轮
+    repeated Pattern Patterns = 1;  //转轮上的图案列表
+    int32 runnerNumber = 2;         //转轮编号
+    int32 Cursor = 3;               //初始游标
+}
+
+message Line {
+    int32 LineNumber = 1;           //线编号
+    string Seat = 2;                //线坐标
+}
+
+message SlotMachine {               //老虎机初始状态
+    repeated Patterns Patterns = 1; //转轮列表
+    int64 SumOfMoney = 2;           //奖池金额
+    repeated Line Lines= 3;         //规则线
+    repeated PlayerInfo players = 4;//玩家信息列表
+}
+
+message Start {
+    int64 ClientID = 1;             //客户Id
+    int32 LineAmount = 2;           //下注线数
+    int64 BetAmount = 3;            //底注
+}
+
+message RotateResult {              //旋转结果
+    repeated Patterns patterns = 1; //图案列表
+    repeated int32 TurnsNumber = 2; //旋转了几圈
+    int64 BonusAmount = 3;          //赢得奖金
+    string SpecialName = 4;         //特殊奖励名称
+    int64 SpecialAmount = 5;        //特殊奖励次数
+    repeated int32 HitRules = 6;    //命中线条id列表
+    repeated string HitCount = 7;   //每条线命中的图案名称及其命中个数
+    int64 balance = 8;              //用户余额
+}
+
+message SlotError{
+    string ErrorCode = 1;           //错误消息
+}
+
+message OutSlotRoom{                //用户退出房间
+    int64 ClientID = 1;
+}
+
+message JackpotMoney{
+    int64 MoneyAmount = 1;          //奖池金额
+}
+
+message AskForSlotVideo{            //请求老虎机录像
+    int32 WhichRank = 1;            //哪个排行榜---1：最新上榜名单，2：历史最高名单
+}
+
+message ReturnSlotVideo{            //返回老虎机录像排行版
+    repeated ReturnRank Ranks = 1;
+}
+
+message PlayerInfo{                 //玩家信息
+    int64 PlayerId = 1;             //id
+    string PlayerName = 2;          //名字
+    string Head = 3;                //头像
+    int32 Seat = 4;                 //玩家本人座位号
+    int32 State = 5;                //状态0： 在线，1： 离线
+}
+
+message InvitePlayer{               //邀请玩家
+    int64 PlayerId = 1;             //邀请人id
+    int64 InvitedId = 2;            //被邀请人id
+    int32 Seat = 3;                 //被邀请人座位
+}
+
+message PlayerChatIn{
+    int64 UserId = 1;
+    string PlayerName = 2;          //名字
+    string Head = 3;                //头像
+    string ChatContent = 4;         //聊天内容
+}
+
+message PlayerChatOut{
+    int64 UserId = 1;
+    string PlayerName = 2;          //名字
+    string Head = 3;                //头像
+    string ChatContent = 4;         //聊天内容
+}
+
+message InviteConfirm{              //确认是否被邀请
+    int64 InvitedId = 1;            //被邀请人id
+    int64 PlayerId = 2;             //邀请人id
+    bool IsAgree = 3;               //是否同意
+}
+
+message FriendsList{
+    repeated Friend Friends = 1;    //好友信息列表
+}
+
+message Friend{
+    int64 PlayerId = 1;             //id
+    string PlayerName = 2;          //名字
+    string Head = 3;                //头像
+    int32 State = 4;                //状态  离线：0  空闲：1
+}
+
+message ApplyFriendList{            //申请好友列表
+    int64 UserId = 1;
+}
+
+message ReturnRank{                 //排行榜玩家信息
+    int64 RecordId = 1;             //记录id
+    string PlayerName = 2;          //玩家名称
+    string Head = 3;                //头像
+    string SpecialName = 4;         //特殊奖励名称
+    int64 Money = 5;                //中奖金额
+    int64 Time = 6;                 //中奖时间
+}
+
+message AskForRankResult{           //申请排行榜中某个用户的结果
+    int64 RecordId = 1;             //记录id
+}
+
+message ReturnRankResult{
+    string Line = 1;                //命中的线id（可能多条）
+    string HitCount = 2;            //每条中奖的线中命中了几个图案（需要拆解）
+    int64  Money = 3;               //中奖的总金币数
+    string SpecialName = 4;         //特殊奖励的名称
+    int64 BetMoney = 5;             //下注金额（单线）
+    int32 BetLine = 6;              //下注线数
+    string Result = 7;              //旋转结果（3*5个图案id，传过来的是id字符串需要拆解成二维数组）
+    int64 BeforeMoney = 8;          //还没开始的金币数
+}
+
+message RequestChatRecord{          //请求聊天记录
+    int64 UserId = 1;
+}
+
+message ChatRecord{                 //返回聊天记录
+    repeated PlayerChatIn playerChatIn = 1; //聊天记录
+}
+
+message OtherInOutRoom{             //有人进入房间更新房间信息
+    int64 OutId = 1;                //退出人的Id
+    repeated PlayerInfo players = 2;//玩家信息列表
+}
+
+message OtherState{                 //房间内别人的状态改变
+    int64 OutId = 1;                //状态改变人的Id
+    repeated PlayerInfo players = 2;//玩家信息列表
+}
+
+message Patterns{
+    repeated Pattern pattern = 1;
+}
