@@ -13,8 +13,8 @@ import akka.http.scaladsl.model.{ContentTypes, HttpEntity, HttpHeader, HttpRespo
 import scala.concurrent.duration._
 
 object MockHTTP {
-  implicit val system: ActorSystem = MockSystem.system
-  implicit val executionContext: ExecutionContextExecutor = system.dispatcher
+  implicit private val system: ActorSystem = MockSystem.system
+  implicit private val executionContext: ExecutionContextExecutor = system.dispatcher
 
 
   // 基础方法

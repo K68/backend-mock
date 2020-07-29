@@ -4,6 +4,8 @@ import play.api.libs.json.Json
 
 
 object GetToken extends App {
+  implicit val system = MockSystem.system
+  implicit val ec = system.dispatcher
   var uuid: String = ""
   var token: String = ""
   postJson("http://192.168.5.30:9000/api/auth/login",

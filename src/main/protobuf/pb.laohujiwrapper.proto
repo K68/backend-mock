@@ -1,0 +1,35 @@
+syntax = "proto3";
+import "pb.laohuji.proto";
+
+message WrapperLaohujiMessage {
+    oneof msg{
+        IntoClientRoom intoClientRoom = 1;
+        Pattern pattern = 2;
+        Runner runner = 3;
+        Line line = 4;
+        SlotMachine slotMachine = 5;
+        Start start = 6;
+        RotateResult rotateResult = 7;
+        SlotError slotError = 8;
+        OutSlotRoom outSlotRoom = 9;
+        JackpotMoney jackpotMoney = 10;
+        AskForSlotVideo askForSlotVideo = 11;
+        ReturnSlotVideo returnSlotVideo = 12;
+        PlayerInfo playerInfo = 13;
+        InvitePlayer invitePlayer = 14;
+        PlayerChatIn playerChatIn = 16;
+        PlayerChatOut playerChatOut = 17;
+        InviteConfirm inviteConfirm = 18;
+        FriendsList friendsList = 19;
+        Friend friend = 20;
+        ApplyFriendList applyFriendList = 21;
+        ReturnRank returnRank = 22;
+        AskForRankResult askForRankResult = 23;
+        ReturnRankResult returnRankResult = 24;
+        RequestChatRecord requestChatRecord = 25;
+        ChatRecord chatRecord = 26;
+        OtherInOutRoom otherInOutRoom = 27;
+        OtherState otherState = 28;
+        Patterns patterns = 29;
+    }
+}

@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+message RoomInfoGet {
+  int64 UserId = 1;
+  string Space = 2;
+}
+
+message RoomInfo {
+  string Meta = 1;
+  int64 Jackpot = 2;
+  int64 Threshold = 3;
+  int32 maxUser = 4;
+}
+
+message RoomInfoReturn {
+  repeated RoomInfo Room = 1;
+}
+
+message IntoGameGet {
+  int64 UserId = 1;
+}
+
+message IntoGameReturn {
+  int64 UserId = 1;
+  string name = 2;
+  string head = 3;
+  int32 level = 4;
+  int64 coin = 5;
+}
+
+message UserInfoGet {
+  int64 selfId = 1;
+  int64 otherId = 2;
+}
+
+message UserInfoReturn {
+  int64 UserId = 1;
+  string Name = 2;
+  string Head = 3;
+  int32 Level = 4;
+  int64 Coin = 5;
+  bool IsFriend = 6;
+}
