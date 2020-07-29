@@ -18,16 +18,16 @@ object MockSystem {
   implicit val system: ActorSystem = ActorSystem()
   import system.dispatcher
 
-  final val Completion = TextMessage("Completion")
-  final val Failure = TextMessage("Failure")
+  final val MockCompletion = TextMessage("Completion")
+  final val MockFailure = TextMessage("Failure")
 
   def setupMock(wsURL: String,
                 receive: (Message, ActorRef[Message]) => Unit,
                 connectComplete: (Try[Done], ActorRef[Message]) => Unit,
                 connectClosed: Done => Unit): ActorRef[Message] = {
     val (outActor, publisher) = ActorSource.actorRef[Message](
-      completionMatcher = { case Completion => },
-      failureMatcher = { case Failure => throw new Exception("failureMatcher") },
+      completionMatcher = { case MockCompletion => },
+      failureMatcher = { case MockFailure => throw new Exception("failureMatcher") },
       bufferSize = 32,
       OverflowStrategy.dropNew
     ).toMat(Sink.asPublisher(false))(Keep.both).run()
