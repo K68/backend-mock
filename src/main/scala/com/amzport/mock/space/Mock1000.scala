@@ -14,7 +14,7 @@ object Mock1000 {
     MockUser.send(MPB.toByte(flowMeta, DispatchWrapper().withDispatch(m).toByteString))
   }
 
-  def receiveMessage(space: Int, flowMeta: FlowMeta, value: ByteString): Unit = {
+  private def receiveMessage(space: Int, flowMeta: FlowMeta, value: ByteString): Unit = {
     MPB.parseWrap(DispatchWrapper, value)  match {
       case Some(wrapper) =>
         wrapper.msg match {
@@ -46,6 +46,7 @@ object Mock1000 {
   }
 
   private var callbackOpt: Option[(FlowMeta, GeneratedMessage) => Unit] = None
+
   def observe(cb: (FlowMeta, GeneratedMessage) => Unit): Unit = {
     callbackOpt = Some(cb)
     MockUser.observe(1000, receiveMessage)
