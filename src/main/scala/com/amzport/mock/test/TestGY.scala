@@ -13,8 +13,6 @@ object TestGY extends App {
   //建立连接---登录
   MockUser.setupMockUser("116", "111", "http://192.168.5.81:9000/api/auth/login", "ws://192.168.5.81:9000/wsz")
 
-  val uuid = MockUser.accountId
-
   MockUser.observe(999, (space, meta, value) => {
     MockLog.debug(s"$value")
   })
@@ -67,7 +65,7 @@ object TestGY extends App {
     }
   })
 
-  //简历web连接
+  //建立web连接
   MockWeb.setupMockWeb("0.0.0.0")
 
   //监听到传入聊天室的消息---1001
