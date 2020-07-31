@@ -3,7 +3,7 @@ package com.amzport.mock.test
 import com.amzport.mock.MPB.FlowMeta
 import com.amzport.mock.space.{Mock1000, Mock1001, Mock1011, Mock999}
 import com.amzport.mock.{MPB, MockLog, MockUser, MockWeb}
-import pb.chat.Tips
+import pb.chat._
 import pb.inoutroom._
 import pb.inoutroomwrapper.WrapperInOutRoomMessage
 import pb.laohuji._
@@ -17,9 +17,13 @@ object TestGY extends App {
   var freeCount: Int = 0
   var gCount: Int = 0
   var jCount: Int = 0
-  var roomId: String = roomId
+  var roomId: String = "2"
+  var chatRoomId: String = "33"
   //建立连接---登录
   MockUser.setupMockUser("117", "111", "http://192.168.5.81:9000/api/auth/login", "ws://192.168.5.81:9000/wsz")
+
+
+  /*###############   回复    #################*/
 
   //监听到999的消息
   Mock999.observe((flowMeta, msg) => {
@@ -38,6 +42,24 @@ object TestGY extends App {
     msg match {
       case x: Tips => //进入房间时返回的消息
       MockLog.debug(s"${x.toString}", 1001)
+      case x: ShowMyFriends => //展示好友列表
+        MockLog.debug(s"${x.toString}", 1001)
+      case x: SendMessage => //发送消息
+        MockLog.debug(s"${x.toString}", 1001)
+      case x: HistoryChatArray => //历史聊天记录
+        MockLog.debug(s"${x.toString}", 1001)
+      case x: ShowApplyFriend => //展示申请好友列表
+        MockLog.debug(s"${x.toString}", 1001)
+      case x: WorldHistoryListRsp => //世界聊天历史记录
+        MockLog.debug(s"${x.toString}", 1001)
+      case x: WorldChatRsp => //返回世界而聊天内容
+        MockLog.debug(s"${x.toString}", 1001)
+      case x: ShowRecentPeople => //展示近期玩家
+        MockLog.debug(s"${x.toString}", 1001)
+      case x: AddFriendRsp => //添加好友
+        MockLog.debug(s"${x.toString}", 1001)
+      case x: ChatError => //聊天错误信息
+        MockLog.debug(s"${x.toString}", 1001)
     }
   })
 
@@ -84,9 +106,14 @@ object TestGY extends App {
       case x: InviteRoom =>
         MockLog.debug(s"请求成功---${x.toString}", 1000)
       case x: DispatchResult =>
+        if (x.ok) roomId = x.room
         MockLog.debug(s"请求成功---${x.toString}", 1000)
     }
   })
+
+
+
+  /*###############   发送    #################*/
 
   //建立web连接
   MockWeb.setupMockWeb("0.0.0.0")
@@ -114,10 +141,84 @@ object TestGY extends App {
         val userId = m("userId")
         val roomId = m("roomId")
         val userIntoChat = pb.chat.UserIntoChat(userId.toLong, roomId.toInt)
-        Mock1001.sendChatRoom(FlowMeta(1001, userId, 1, roomId, 2), userIntoChat)
+        Mock1001.sendChatRoom(FlowMeta(1001, userId, 1, chatRoomId, 2), userIntoChat)
+      //打开好友列表
+      case "OpenMyFriends" =>  //URL: http://127.0.0.1:9999/1001?msg=OpenMyFriends&userId=?
+        val userId = m("userId")
+        val openMyFriends = pb.chat.OpenMyFriends(userId.toLong)
+        Mock1001.sendOpenFriends(FlowMeta(1001, userId, 1, chatRoomId, 2), openMyFriends)
+      //修改自己和对方的好友列表
+      case "DeleteFriend" =>  //URL: http://127.0.0.1:9999/1001?msg=DeleteFriend&userId=?&friendId=?
+        val userId = m("userId")
+        val friendId = m("friendId")
+        val openMyFriends = pb.chat.DeleteFriend(userId.toLong, friendId.toLong)
+        Mock1001.sendDeleteFriends(FlowMeta(1001, userId, 1, chatRoomId, 2), openMyFriends)
+      //搜索好友
+      case "FriendSearch" =>  //URL: http://127.0.0.1:9999/1001?msg=FriendSearch&userId=?&searchMessage=?
+        val userId = m("userId")
+        val searchMessage = m("searchMessage")
+        val friendSearch = pb.chat.FriendSearch(userId.toLong, searchMessage)
+        Mock1001.sendFriendSearch(FlowMeta(1001, userId, 1, chatRoomId, 2), friendSearch)
+      //发起聊天
+      case "UserChatReceive" =>  //URL: http://127.0.0.1:9999/1001?msg=UserChatReceive&userId=?&friendId=?
+        val userId = m("userId")
+        val friendId = m("friendId")
+        val userChatReceive = pb.chat.UserChatReceive(userId.toLong, friendId.toLong)
+        Mock1001.sendUserChatReceive(FlowMeta(1001, userId, 1, chatRoomId, 2), userChatReceive)
+      //发送消息
+      case "PressSend" =>  //URL: http://127.0.0.1:9999/1001?msg=PressSend&userId=?&friendId=?&chatInformation=?
+        val userId = m("userId")
+        val friendId = m("friendId")
+        val chatInformation = m("chatInformation")
+        val pressSend = pb.chat.PressSend(userId.toLong, friendId.toLong, chatInformation)
+        Mock1001.sendPressSend(FlowMeta(1001, userId, 1, chatRoomId, 2), pressSend)
+      //用户离开
+      case "UserLeave" =>  //URL: http://127.0.0.1:9999/1001?msg=UserLeave&userId=?
+        val userId = m("userId")
+        val userLeave = pb.chat.UserLeave(userId.toLong)
+        Mock1001.sendUserLeave(FlowMeta(1001, userId, 1, chatRoomId, 2), userLeave)
+      //打开好友申请
+      case "OpenApplyFriend" =>  //URL: http://127.0.0.1:9999/1001?msg=OpenApplyFriend&userId=?
+        val userId = m("userId")
+        val openApplyFriend = pb.chat.OpenApplyFriend(userId.toLong)
+        Mock1001.sendOpenApplyFriend(FlowMeta(1001, userId, 1, chatRoomId, 2), openApplyFriend)
+      //同意好友申请
+      case "AddFriend" =>  //URL: http://127.0.0.1:9999/1001?msg=OpenApplyFriend&userId=?&peopleId=?
+        val userId = m("userId")
+        val peopleId = m("peopleId")
+        val addFriend = pb.chat.AddFriend(userId.toLong, peopleId.toLong)
+        Mock1001.sendAddFriend(FlowMeta(1001, userId, 1, chatRoomId, 2), addFriend)
+      //拒绝好友申请
+      case "RefuseApply" =>  //URL: http://127.0.0.1:9999/1001?msg=RefuseApply&userId=?&peopleId=?
+        val userId = m("userId")
+        val peopleId = m("peopleId")
+        val refuseApply = pb.chat.RefuseApply(userId.toLong, peopleId.toLong)
+        Mock1001.sendRefuseApply(FlowMeta(1001, userId, 1, chatRoomId, 2), refuseApply)
+      //申请好友
+      case "ApplyAddFriend" =>  //URL: http://127.0.0.1:9999/1001?msg=ApplyAddFriend&userId=?&peopleId=?
+        val userId = m("userId")
+        val peopleId = m("peopleId")
+        val applyAddFriend = pb.chat.ApplyAddFriend(userId.toLong, peopleId.toLong)
+        Mock1001.sendApplyAddFriend(FlowMeta(1001, userId, 1, chatRoomId, 2), applyAddFriend)
+      //搜索陌生人
+      case "SearchPeople" =>  //URL: http://127.0.0.1:9999/1001?msg=SearchPeople&searchMessage=?
+        val searchMessage = m("searchMessage")
+        val searchPeople = pb.chat.SearchPeople(searchMessage)
+        Mock1001.sendSearchPeople(FlowMeta(1001, MockUser.accountId, 1, chatRoomId, 2), searchPeople)
+      //转账
+      case "Transfer" =>  //URL: http://127.0.0.1:9999/1001?msg=Transfer&fromId=?&toId=?&amount=?
+        val fromId = m("fromId")
+        val toId = m("toId")
+        val amount = m("amount")
+        val transfer = pb.chat.Transfer(fromId.toLong, toId.toLong, amount.toLong)
+        Mock1001.sendTransfer(FlowMeta(1001, MockUser.accountId, 1, chatRoomId, 2), transfer)
+      //查询世界聊天记录
+      case "CycleQuery" =>  //URL: http://127.0.0.1:9999/1001?msg=CycleQuery&chatId=?&userId=?
+        val chatId = m("chatId")
+        val userId = m("userId")
+        val cycleQuery = pb.chat.Transfer(chatId.toLong, userId.toLong)
+        Mock1001.sendTransfer(FlowMeta(1001, MockUser.accountId, 1, chatRoomId, 2), cycleQuery)
 
-      case "b" =>
-        MockLog.debug(s"${m("code2")}", 1001)
     }
   )
 
