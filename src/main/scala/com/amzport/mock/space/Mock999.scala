@@ -52,7 +52,7 @@ object Mock999 {
 
   def observe(cb: (FlowMeta, GeneratedMessage) => Unit): Unit = {
     callbackOpt = Some(cb)
-    MockUser.observe(1000, receiveMessage)
+    MockUser.observe(999, receiveMessage)
   }
 
 }
