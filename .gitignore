@@ -13,4 +13,5 @@ project/plugins/project/
 /miracle.iml
 .idea/
 lib/
-
+*.log
+/null
