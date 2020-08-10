@@ -1,0 +1,211 @@
+syntax = "proto3";
+
+//坐下进入房间 （前端传给我）
+message DragonTigerUserSitDownReceive {
+     int64 UserID = 1;          //用户ID
+     int32 RoomId = 2;          //房间ID
+}
+
+//给前端
+message DragonTigerUserSitDownSend {
+    DragonTigerUserItem userItem = 1;
+    DragonTigerStatusChang StatusChang = 2;
+    DragonTigerChangeBanker changeBanker = 3;
+    DragonTigerRecordRoadArrayInt RecordRoadArrayInt = 4;
+    int64 m_lApplyBankerCondition = 5;
+}
+
+message DragonTigerUserItem {
+    int64 UserID = 1;          //用户ID
+    string UserName = 2;       //用户昵称
+    string UserProfile = 3;    //用户头像
+    int64 UserGold = 4;        //用户金币
+    int32 ChairID = 5;         //座位ID
+}
+//
+message DragonTigerUsersItem {
+    repeated DragonTigerUserItem userItem = 1; //用户信息
+    int32 ListUserCount = 2;         //列表人数
+}
+message DragonTigerTableCardArrayItem{
+    repeated DragonTigerTableCardArray TableCardArray = 1;//桌面扑克
+}
+//申请庄家 前端给我
+message DragonTigerApplyBankerReceive {
+    int64 UserID = 1;          //申请用户ID
+}
+
+message DragonTigerApplyBankerSend {
+    repeated int32 ChairID = 1;     //申请上庄用户位置
+    int32 ListApplyCount = 2;        //申请人数
+}
+message DragonTigerCancelBanker {
+    int64 CancelUser = 1;     //取消上庄用户位置
+    int32 ListApplyCount = 2; //申请人数
+}
+//换庄
+message DragonTigerChangeBanker{
+    int64 BankerUser = 1;    //当前庄家
+    int64 BankerScore = 2;   //庄家分数
+    int32 ListApplyCount = 3;//申请人数
+    bool AndroidUser = 4 ;//机器标识
+    int64 BankerID = 5;          //庄家ID
+    string BankerName = 6;       //庄家昵称
+    string BankerProfile = 7;    //庄家头像
+}
+//下注失败
+message DragonTigerPlaceBetFail {
+    int64 PlaceUse = 1;     //下注玩家
+    int64 BetArea = 2;      //下注区域
+    int64 PlaceScore = 3;   //当前下注
+    int32 Tips = 4;        //提示信息
+}
+//下注 前端给我
+message DragonTigerPlaceBetReceive {
+    int32 ChairID = 1;     //用户位置
+    int32 BetArea = 2;     //下注区域
+    int64 BetScore = 3;    //加注数目
+    int32 AndroidUser = 4 ;//机器标识
+}
+
+message DragonTigerPlaceAllBetSend{
+    int64 AllBet = 1;      //总下注
+    repeated int64 AreaAllBet = 2; //各区域总下注
+}
+message DragonTigerPlaceBetSend{
+    int32 ChairID = 1;     //用户位置
+    int64 UserGold = 2;    //用户金币
+    int32 BetArea = 3;     //下注区域
+    int64 BetScore = 4;    //加注数目
+    int32 AndroidUser = 5 ;//机器标识
+    int64 AllBet = 6;      //总下注
+    repeated int64 AreaAllBet = 7; //各区域总下注
+    repeated int64 AreaPlayBet = 8; //玩家各区域下注
+}
+//续注 前端给我
+message DragonTigerContinueBet{
+    int32 ChairID = 1;         //座位ID
+    repeated int64 AreaPlayBet = 2; //玩家各区域下注
+    int64 AllBet = 3;      //总下注
+    repeated int64 AreaAllBet = 4; //各区域总下注
+}
+
+//状态改变
+message DragonTigerStatusChang{
+    int32 Status = 1;                     //具体状态
+    int32 TimeLeave = 2;                  //剩余时间
+}
+
+//游戏开始
+message DragonTigerGameStart
+{
+    int32 TimeLeave = 1;                  //剩余时间
+    int32 BankerUser = 2;                 //庄家位置
+    int64 BankerScore = 3;                //庄家金币
+    int64 PlayBetScore = 4;                   //玩家最大下注
+    int64 PlayFreeSocre = 5;               //玩家自由金币
+    int32 ChipRobotCount = 6;               //人数上限 (下注机器人)
+    int32 ListUserCount = 7;               //列表人数
+    int32 AndriodCount = 8;                //机器人列表人数
+}
+
+//游戏结束
+message DragonTigerGameEnd
+{
+    int64 UserScore = 1;                        //玩家个人成绩
+    //扑克信息
+    //repeated int32 CardCount = 2;            //扑克数目
+    repeated DragonTigerTableCardArray TableCardArray = 2;//桌面扑克
+    int32 PlayerCount = 3;                  //闲家分数
+    int32 BankerCount = 4;                  //庄家分数
+    //庄家信息
+    int64 BankerScore = 5;                  //庄家成绩
+    int64 BankerTotallScore = 6;            //庄家总成绩
+    int32 BankerTime = 7;                   //做庄次数
+    //玩家成绩
+    repeated DragonTigerPlayScore PlayScore= 8;            //每个玩家成绩
+    int64 PlayAllScore = 9;                  //玩家总成绩
+    //全局信息
+    int64 Revenue = 10;                     //游戏税收
+    repeated int64 WinArea = 11;           //各区域输赢
+}
+message DragonTigerTableCardArray
+{
+    repeated string TableCard = 1; //桌面扑克
+}
+message DragonTigerPlayScore{
+    int64 UserID = 1;          //用户ID
+    int32 ChairID = 2;         //座位ID
+    int64 PlayScore = 3;       //玩家成绩
+    string UserName = 4;       //用户昵称
+    string UserProfile = 5;    //用户头像
+    int64 UserGold = 6;        //用户金币
+}
+message DragonTigerRecordRoadArrayInt
+{
+    repeated DragonTigerRecordRoadInt RecordRoad = 1;
+}
+message DragonTigerRecordRoadArrayString
+{
+    repeated DragonTigerRecordRoadString RecordRoad = 1;
+}
+message DragonTigerRecordRoadString
+{
+    repeated string Record = 1;
+}
+message DragonTigerRecordRoadInt
+{
+    repeated int32 Record = 1;
+}
+//记录信息
+message DragonTigerGameRecordReceive
+{
+    int64 UserID = 1;          //用户ID
+}
+message DragonTigerGameRecordSend
+{
+    DragonTigerRecordRoadArrayInt ZhupanRoad = 1;//Array.ofDim[Int](6, 17) //珠盘路
+    DragonTigerRecordRoadArrayInt HighRoad = 2;//Array.ofDim[String](6, 17) //大路
+    DragonTigerRecordRoadArrayInt TaiYanTsaiRoad = 3;//Array.ofDim[Int](6, 17) //大眼仔路
+    DragonTigerRecordRoadArrayInt SmallRoad = 4;//Array.ofDim[Int](6, 17) //小路
+    DragonTigerRecordRoadArrayInt CockroachRoad = 5;//Array.ofDim[Int](6, 17) //曱甴路
+}
+
+//用户离开 前端发我
+message DragonTigerUserStandUp
+{
+    int32 ChairID = 1;         //座位ID
+}
+message DragonTigerUserStateChange
+{
+    int64 UserID = 1;         //用户ID
+    string UserName = 2;       //用户昵称
+    int32 Tips = 3;         //提示信息 0用户重连 1 用户断线
+}
+message DragonTigerTipsMessage
+{
+    int32 Tips = 1;         //提示信息
+}
+message DragonTigerCheckSeated
+{
+
+}
+/*
+1.由于庄家强退，游戏提前结束！
+2.你的金币不足以申请庄家，申请失败！
+3.你已经申请了庄家，不需要再次申请！
+4.游戏已经开始，不可以取消当庄！
+5.分数少于 最小坐庄分数 强行换庄!"
+6.做庄次数达到最大连庄数 强行换庄!"
+7."恭喜"+UserName+"上庄"
+8."由于你的金币数"+UserScore+"少于坐庄必须金币数"+m_lApplyBankerCondition+",你无法上庄！"
+9 "现在状态为"+TestRoom.Status +"，不在下注时间"
+10."您为庄家无法下注"
+11."积分不足"
+12."超过下注总量最大限制"
+13."超过此区域可下注数量"
+14.此用户已进入
+15.积分未达到进入房间要求
+16.连接超时
+17.缓存出错
+*/

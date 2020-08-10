@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+import "pb.dragonTiger.proto";
+
+message WrapperDragonTigerMessage{
+    oneof msg {
+        DragonTigerUserSitDownReceive userSitDownReceive = 1;
+        DragonTigerUserSitDownSend userSitDownSend = 2;
+        DragonTigerUserItem userItem = 3;
+        DragonTigerUsersItem usersItem = 4;
+        DragonTigerTableCardArrayItem tableCardArrayItem = 5;
+        DragonTigerApplyBankerReceive applyBankerReceive = 6;
+        DragonTigerApplyBankerSend applyBankerSend = 7;
+        DragonTigerCancelBanker cancelBanker = 8;
+        DragonTigerChangeBanker changeBanker = 9;
+        DragonTigerPlaceBetFail placeBetFail = 10;
+        DragonTigerPlaceBetReceive placeBetReceive = 11;
+        DragonTigerPlaceAllBetSend PlaceAllBetSend = 12;
+        DragonTigerPlaceBetSend placeBetSend = 13;
+        DragonTigerContinueBet continueBet = 14;
+        DragonTigerStatusChang StatusChang = 15;
+        DragonTigerGameStart gameStart = 16;
+        DragonTigerGameEnd gameEnd = 17;
+        DragonTigerTableCardArray tableCardArray =18;
+        DragonTigerPlayScore PlayScore = 19;
+        DragonTigerRecordRoadArrayInt recordRoadArrayInt = 20;
+        DragonTigerRecordRoadArrayString recordRoadArrayString = 21;
+        DragonTigerRecordRoadInt recordRoadInt= 22;
+        DragonTigerRecordRoadString recordRoadString= 23;
+        DragonTigerGameRecordReceive gameRecordReceive = 24;
+        DragonTigerGameRecordSend gameRecordSend = 25;
+        DragonTigerUserStandUp userStandUp = 26;
+        DragonTigerUserStateChange userStateChange = 27;
+        DragonTigerTipsMessage tipsMessage = 28;
+        DragonTigerCheckSeated checkSeated = 29;
+    }
+}
