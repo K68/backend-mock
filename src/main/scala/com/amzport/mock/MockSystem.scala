@@ -4,7 +4,7 @@ import akka.Done
 import akka.actor.ActorSystem
 import akka.actor.typed.ActorRef
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.model.StatusCodes
+import akka.http.scaladsl.model.{HttpHeader, StatusCodes}
 import akka.http.scaladsl.model.ws.{Message, TextMessage, WebSocketRequest}
 import akka.stream.OverflowStrategy
 import akka.stream.scaladsl.{Flow, Keep, Sink, Source}
@@ -24,7 +24,8 @@ object MockSystem {
   def setupMock(wsURL: String,
                 receive: (Message, ActorRef[Message]) => Unit,
                 connectComplete: (Try[Done], ActorRef[Message]) => Unit,
-                connectClosed: Done => Unit): ActorRef[Message] = {
+                connectClosed: Done => Unit,
+                wsHeaders: Seq[HttpHeader] = Seq.empty): ActorRef[Message] = {
     val (outActor, publisher) = ActorSource.actorRef[Message](
       completionMatcher = { case MockCompletion => },
       failureMatcher = { case MockFailure => throw new Exception("failureMatcher") },
@@ -41,7 +42,7 @@ object MockSystem {
       Flow.fromSinkAndSourceMat(theSink, Source.fromPublisher(publisher))(Keep.left)
 
     val (upgradeResponse, closed) =
-      Http().singleWebSocketRequest(WebSocketRequest(wsURL), flow)
+      Http().singleWebSocketRequest(WebSocketRequest(wsURL, wsHeaders), flow)
 
     val connected = upgradeResponse.map { upgrade =>
       if (upgrade.response.status == StatusCodes.SwitchingProtocols) {

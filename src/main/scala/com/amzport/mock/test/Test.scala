@@ -1,5 +1,7 @@
 package com.amzport.mock.test
 
+import akka.http.scaladsl.model.HttpHeader
+import akka.http.scaladsl.model.headers.RawHeader
 import akka.http.scaladsl.model.ws.{BinaryMessage, TextMessage}
 import com.amzport.mock.{MockHTTP, MockLog, MockSystem, MockWeb}
 import play.api.libs.json.Json
@@ -34,7 +36,8 @@ object Test extends App {
     (_, out) => {
       out ! TextMessage(s"Hello World $count")
     },
-    _ => println("closed")
+    _ => println("closed"),
+    Seq(RawHeader("AAA", "XXX"))
   )
 
   system.scheduler.scheduleOnce(7.seconds) {
