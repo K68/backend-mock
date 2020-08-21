@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+message WrapperAdminMessage {
+    oneof msg{
+        QueryLogonUser queryLogonUser = 1;
+        LogonUserAmount logonUserAmount = 2;
+        ManagerQuit managerQuit = 3;
+        ManagerTipsInfo managerTipsInfo = 4;
+        CheckAllRoomInfo checkAllRoomInfo = 5;
+        AllRoomInfo allRoomInfo = 6;
+        AllRoomInfoListRsp allRoomInfoListRsp = 7;
+        CheckProfitAndLoss checkProfitAndLoss = 8;
+        ProfitAndLoss profitAndLoss = 9;
+        HistoryProfitAndLossListRsp historyProfitAndLossListRsp = 10;
+        LiveProfitAndLossListRsp liveProfitAndLossListRsp = 11;
+    }
+}
+
+message QueryLogonUser {            //查询注册过的用户数量  FA
+    int64 uuid = 1;                 //管理员id
+}
+
+message LogonUserAmount{            //返回注册用户数量
+    int64 userAmount = 1;
+}
+
+message ManagerQuit {               //管理员退出 FA
+    int64 uuid = 1;                 //管理员id
+}
+
+message ManagerTipsInfo {           //提示信息
+    string tips = 1;                //内容
+}
+
+message CheckAllRoomInfo{           //查看所有房间信息 FA
+    int64 uuid = 1;
+}
+
+message AllRoomInfo{                //返回的所有房间的信息
+    string roomId = 1;
+    string meta = 2;
+    int32 space = 3;
+    string roomName = 4;
+    repeated string uuid = 5;
+}
+
+message AllRoomInfoListRsp{         //返回所有房间信息列表
+    repeated AllRoomInfo allRoomInfo = 1;
+}
+
+message CheckProfitAndLoss{         //查看过多或过少的盈亏统计 FA
+    int64 uuid = 1;
+}
+
+message ProfitAndLoss{              //返回盈亏统计
+    string uuid = 1;
+    string roomId = 2;
+    string meta = 3;
+    int32  space = 4;
+    int64 coin = 5;                 //盈亏的金币
+    int64 inCoin = 6;               //进房金币
+    int64 outCoin = 7;              //退房金币
+    string inTime = 8;              //进房时间
+    string outTime = 9;             //退房时间
+}
+
+message HistoryProfitAndLossListRsp{//历史的盈亏记录统计
+    repeated ProfitAndLoss profitAndLoss = 1;
+    string checkTime = 2;           //查询时间
+}
+
+message LiveProfitAndLossListRsp{   //实时的盈亏记录统计
+    ProfitAndLoss profitAndLoss = 1;
+    string checkTime = 2;           //查询时间
+}
+
+

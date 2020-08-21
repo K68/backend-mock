@@ -9,7 +9,7 @@ import pb.miracle.dispatch.{DispatchWrapper, InviteRoom, RoomDispatch}
 
 object TestYJ extends App {
 
-  MockUser.setupMockUser("111", "111", "http://127.0.0.1:9000/api/auth/login", "ws://127.0.0.1:9000/wsz")
+  MockUser.setupMockUser("111", "111", "http://192.168.5.29:9000/api/auth/login", "ws://192.168.5.29:9000/wsz")
   MockWeb.setupMockWeb("0.0.0.0")
   //邀请好友
   MockWeb.observe("1010", (_, m) =>
