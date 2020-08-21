@@ -6,12 +6,12 @@ import akka.http.scaladsl.model.headers.RawHeader
 import akka.http.scaladsl.model.ws.{BinaryMessage, Message, TextMessage}
 import akka.util.ByteString
 import com.amzport.manager.HelloStageDemo.loginStage
-import com.amzport.manager.TabStage
+import com.amzport.manager.{HelloStageDemo, TabStage}
 import com.amzport.mock.MPB.FlowMeta
 import com.amzport.mock.MockHTTP.{AuthMeta, postJson, rspEntityJson}
-
 import pb.miracle.auth.Wrapper
 import play.api.libs.json.Json
+import scalafx.stage.Stage
 
 import scala.concurrent.ExecutionContextExecutor
 import scala.concurrent.duration._
@@ -39,8 +39,7 @@ object MockAdmin {
           println(authenticationToken)
           if(accountId != "") {
             println(444)
-//            val window = new TabStage
-//            loginStage.close()
+            HelloStageDemo.hello()
           }
 
 

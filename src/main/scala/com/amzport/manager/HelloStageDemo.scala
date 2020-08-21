@@ -1,7 +1,6 @@
 package com.amzport.manager
 
 
-import com.amzport.manager.model.UserInfo
 import com.amzport.mock.MPB.FlowMeta
 import javafx.event.{ActionEvent, EventHandler}
 import javafx.scene.input.KeyEvent
@@ -11,24 +10,24 @@ import scalafx.scene.Scene
 import scalafx.scene.control.{Button, Label, PasswordField, TextField}
 import scalafx.scene.layout.{GridPane, HBox}
 import scalafx.scene.text.{Font, FontWeight, Text}
-import com.amzport.mock.MockHTTP.{AuthMeta, postJson, rspEntityJson}
 import com.amzport.mock.space.Mock000
-import com.amzport.mock.{MockAdmin, MockHTTP, MockLog, MockUser}
-import com.amzport.mock.test.AdminTest._
+import com.amzport.mock.{MockAdmin, MockLog}
 import pb.admin.{AllRoomInfoListRsp, HistoryProfitAndLossListRsp, LiveProfitAndLossListRsp, LogonUserAmount, ManagerTipsInfo}
-import play.api.libs.json.Json
 
-import scala.concurrent.ExecutionContext
 
 
 
 object HelloStageDemo extends JFXApp {
+  var logonUserNum = ""
+  var tipInfo = ""
 
   Mock000.observe((flowMeta,msg) => {
     msg match {
       case x:LogonUserAmount =>
         MockLog.debug(s"${x.toString}", 1002)
       case x:ManagerTipsInfo =>
+        tipInfo = x.toString
+        println(tipInfo)
         MockLog.debug(s"${x.toString}",1002)
       case x:AllRoomInfoListRsp =>
         MockLog.debug(s"${x.toString}",1002)
@@ -38,6 +37,12 @@ object HelloStageDemo extends JFXApp {
         MockLog.debug(s"${x.toString}", 1002)
     }
   })
+
+  def hello():Unit = {
+    println("hello")
+    val window = new TabStage()
+//    loginStage.close()
+  }
 
   val loginStage = new JFXApp.PrimaryStage {
     title.value = "ScalaFX Welcome"
@@ -98,6 +103,7 @@ object HelloStageDemo extends JFXApp {
 //      ws://192.168.5.29:9000/wsz
       println(userNameContent,passwordContent,loginUrlContent,socketUrlContent)
       MockAdmin.setupMockAdmin(userNameContent,passwordContent,loginUrlContent,socketUrlContent)
+      hello()
     }
   })
   pwBox.setOnKeyPressed(new EventHandler[KeyEvent] {
