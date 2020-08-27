@@ -5,13 +5,12 @@ import akka.actor.typed.ActorRef
 import akka.http.scaladsl.model.headers.RawHeader
 import akka.http.scaladsl.model.ws.{BinaryMessage, Message, TextMessage}
 import akka.util.ByteString
-import com.amzport.manager.HelloStageDemo.loginStage
-import com.amzport.manager.{HelloStageDemo, TabStage}
+import com.amzport.manager.{TabStage}
 import com.amzport.mock.MPB.FlowMeta
 import com.amzport.mock.MockHTTP.{AuthMeta, postJson, rspEntityJson}
 import pb.miracle.auth.Wrapper
 import play.api.libs.json.Json
-import scalafx.stage.Stage
+import scalafx.application.Platform
 
 import scala.concurrent.ExecutionContextExecutor
 import scala.concurrent.duration._
@@ -38,10 +37,11 @@ object MockAdmin {
           println(accountId)
           println(authenticationToken)
           if(accountId != "") {
-            println(444)
-            HelloStageDemo.hello()
+            Platform.runLater(() => {
+              val window = new TabStage()
+              //loginStage.close()
+            })
           }
-
 
           var closed = false
           val _outActor = MockSystem.setupMock(socketURL + s"?accountId=$accountId",
@@ -88,7 +88,6 @@ object MockAdmin {
               }
             },
             (_, out) => {
-              MockLog.info("888")
               val auth = pb.miracle.auth.TokenLogin(accountId, authenticationToken)
               val sendAuth = MPB.toByte(FlowMeta(0, accountId), Wrapper().withTokenLogin(auth))
               out ! BinaryMessage(ByteString(sendAuth))

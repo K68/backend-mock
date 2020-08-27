@@ -13,6 +13,21 @@ message WrapperAdminMessage {
         ProfitAndLoss profitAndLoss = 9;
         HistoryProfitAndLossListRsp historyProfitAndLossListRsp = 10;
         LiveProfitAndLossListRsp liveProfitAndLossListRsp = 11;
+        GetDispatchMetas getDispatchMetas = 12;
+        DispatchMeta dispatchMeta = 13;
+        DispatchMetas dispatchMetas = 14;
+        QueryUsersInOneRoom queryUsersInOneRoom = 15;
+        UsersInOneRoom usersInOneRoom = 16;
+        QueryWhereIsUser queryWhereIsUser = 17;
+        RoomsUserIn roomsUserIn = 18;
+        SendMsgToRooms sendMsgToRooms = 19;
+        SendMsgToAllRooms sendMsgToAllRooms = 20;
+        QueryAdminIpInfo queryAdminIpInfo = 21;
+        AdminIpInfoRsp adminIpInfoRsp = 22;
+        QuerySystemSetting querySystemSetting = 23;
+        SystemSettings systemSettings = 24;
+        SystemSettingsRsp systemSettingsRsp = 25;
+        UpdateSystemSetting updateSystemSetting = 26;
     }
 }
 
@@ -72,6 +87,79 @@ message HistoryProfitAndLossListRsp{//历史的盈亏记录统计
 message LiveProfitAndLossListRsp{   //实时的盈亏记录统计
     ProfitAndLoss profitAndLoss = 1;
     string checkTime = 2;           //查询时间
+}
+
+message GetDispatchMetas{           //请求每个房间下的最大人数和当人数等信息
+    int64 uuid = 1;
+}
+
+message DispatchMeta{
+    string room = 1;
+    int32 space = 2;
+    string meta = 3;
+    string address = 4;
+    int32 nowUser = 5;
+    int32 maxUser = 6;
+}
+
+message DispatchMetas{              //返回每个房间下的最大人数和当人数等信息
+    repeated DispatchMeta dispatchMeta = 1;
+}
+
+message QueryUsersInOneRoom{             //查询某个房间内的用户
+    string roomId = 1;
+}
+
+message UsersInOneRoom{                  //返回某个房间内用户id列表
+    repeated string uuid = 5;
+}
+
+message QueryWhereIsUser{               //查询用户在哪些游戏房间中
+    int64 userId = 1;                   //用户id
+}
+
+message RoomsUserIn{
+    repeated string roomId = 1;         //返回用户所在的房间id列表
+}
+
+message SendMsgToRooms{                 //管理员向指定房间发送消息
+    repeated string roomId = 1;         //房间号列表
+    string msg = 2;                     //消息
+}
+
+message SendMsgToAllRooms{              //管理员向所有房间发送消息
+    int32 space = 1;
+    string meta = 2;
+    string msg = 3;
+}
+
+message QueryAdminIpInfo{               //查询ip信息
+    int32 flag = 1;                     //0: 所有ip信息，1：只有普通信息
+}
+
+message AdminIpInfoRsp{                 //返回ip地址信息
+    string ipAddress = 1;
+    string country = 2;                 //国家
+    string city = 3;                    //城市
+}
+
+message QuerySystemSetting{             //查询系统配置
+    int32 space = 1;
+}
+
+message SystemSettings{                 //返回系统配置数据
+    int32 id = 1;                       //设置id
+    string settingName = 2;             //设置名称
+    string settingValue = 3;            //设置参数
+}
+
+message SystemSettingsRsp{              //返回系统配置数据
+    repeated SystemSettings systemSettings = 1;
+}
+
+message UpdateSystemSetting{            //修改系统配置
+    int32 id = 1;                       //设置id
+    string newSettingValue = 2;         //需要修改的设置参数
 }
 
 
