@@ -7,12 +7,12 @@ import pb.bullFight.WrapperBullFightMessage
 import pb.bullFight.WrapperBullFightMessage.Msg
 import scalapb.GeneratedMessage
 
-object Mock1020 {
+object Mock1018 {
 
   def sendRoomDispatch(flowMeta: FlowMeta, m: WrapperBullFightMessage): Unit = {
-    MockLog.info(s"进入骰宝：${flowMeta.fromId} ${flowMeta.toId}", flowMeta.space)
+    MockLog.info(s"进入百人牛牛：${flowMeta.fromId} ${flowMeta.toId}", flowMeta.space)
     MockUser.send(MPB.toByte(flowMeta, m.toByteString))
-    MockLog.debug(s"${m.toString}", 1020)
+    MockLog.debug(s"${m.toString}", 1018)
   }
 
   private def receiveMessage(space: Int, flowMeta: FlowMeta, value: ByteString): Unit = {
@@ -67,7 +67,7 @@ object Mock1020 {
 
   def observe(cb: (FlowMeta, GeneratedMessage) => Unit): Unit = {
     callbackOpt = Some(cb)
-    MockUser.observe(1020, receiveMessage)
+    MockUser.observe(1018, receiveMessage)
   }
 
 }

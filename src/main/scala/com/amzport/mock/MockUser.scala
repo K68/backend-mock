@@ -33,7 +33,6 @@ object MockUser {
           accountId = authMeta.accountId.toString
           authenticationToken = (res \ "Authentication-Token").as[String]
           authenticationRefreshToken = (res \ "Authentication-Refresh-Token").as[String]
-
           var closed = false
           val _outActor = MockSystem.setupMock(socketURL,
             (message, out) => {
@@ -90,6 +89,7 @@ object MockUser {
           )
 
           outActor = Some(_outActor)
+
 
           // 周期性Ping & Pong 保持链接活跃
           system.scheduler.scheduleAtFixedRate(3.seconds, 6.seconds) {() =>

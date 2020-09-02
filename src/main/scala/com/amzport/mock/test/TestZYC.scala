@@ -19,16 +19,19 @@ import scala.concurrent.duration._
 object TestZYC extends App {
 
   var IsInto = false
-  MockUser.setupMockUser("116", "111", "http://127.0.0.1:9002/api/auth/login", "ws://127.0.0.1:9002/wsz")
+  MockUser.setupMockUser("116", "111", "http://127.0.0.1:9018/api/auth/login", "ws://127.0.0.1:9018/wsz")
   MockUser.observe(999, (space, meta, value) => {
     // TODO
-
   })
 
   // MockSpaceXX 的参考用法
   Mock1012.observe((flowMeta, msg) => {
     msg match {
       case x: UserSitDownSend =>
+        if(x.userItem.get.userID == 6){
+          val UserSitDownReceive = WrapperBaccaratMessage().withUserSitDownReceive(pb.baccarat.UserSitDownReceive(7, 32))
+          Mock1012.sendRoomDispatch(FlowMeta(1012, "7", 1, "32", 2), UserSitDownReceive)
+        }
         MockLog.debug(s"${x.toString}", 1012)
       case x: ApplyBankerSend =>
         MockLog.debug(s"${x.toString}", 1012)
@@ -60,7 +63,7 @@ object TestZYC extends App {
           MockLog.debug("PlaceBet", 1012)
           val ran1 = (new util.Random).nextInt(32767)
           val BetArea =ran1 % (7)
-          val PlaceBetReceive = WrapperBaccaratMessage().withPlaceBetReceive(pb.baccarat.PlaceBetReceive(1,BetArea,500L,0))
+          val PlaceBetReceive = WrapperBaccaratMessage().withPlaceBetReceive(pb.baccarat.PlaceBetReceive(0,BetArea,500L,0))
           Mock1012.sendRoomDispatch(FlowMeta(1012, "6", 1, "32", 2), PlaceBetReceive)
           //}
         }
@@ -73,6 +76,7 @@ object TestZYC extends App {
       case x: PlayScore =>
         MockLog.debug(s"${x.toString}", 1012)
       case x: RecordRoadArrayInt =>
+        MockLog.debug("RecordRoadArrayInt", 1012)
         MockLog.debug(s"${x.toString}", 1012)
       case x: RecordRoadInt =>
         MockLog.debug(s"${x.toString}", 1012)
@@ -215,66 +219,69 @@ object TestZYC extends App {
     }
   })
 
-  Mock1020.observe((flowMeta, msg) => {
+  Mock1018.observe((flowMeta, msg) => {
     msg match {
       case x: UserSitDownSend =>
-        MockLog.debug(s"${x.toString}", 1020)
+        MockLog.debug(s"${x.toString}", 1018)
       case x: ApplyBankerSend =>
-        MockLog.debug(s"${x.toString}", 1020)
+        MockLog.debug(s"${x.toString}", 1018)
       case x: ChangeBanker =>
-        MockLog.debug(s"${x.toString}", 1020)
+        MockLog.debug(s"${x.toString}", 1018)
       case x: PlaceBetSend =>
-        MockLog.debug(s"${x.toString}", 1020)
+        MockLog.debug(s"${x.toString}", 1018)
       case x: UserStateChange =>
-        MockLog.debug(s"${x.toString}", 1020)
+        MockLog.debug(s"${x.toString}", 1018)
       case x:UsersItem =>
-        MockLog.debug(s"${x.toString}", 1020)
+        MockLog.debug(s"${x.toString}", 1018)
       case x:UserItem=>
-        MockLog.debug(s"${x.toString}", 1020)
+        MockLog.debug(s"${x.toString}", 1018)
       case x: TableCardArrayItem =>
-        MockLog.debug(s"${x.toString}", 1020)
+        MockLog.debug(s"${x.toString}", 1018)
       case x: CancelBanker =>
-        MockLog.debug(s"${x.toString}", 1020)
+        MockLog.debug(s"${x.toString}", 1018)
       case x: PlaceBetFail =>
-        MockLog.debug(s"${x.toString}", 1020)
+        MockLog.debug(s"${x.toString}", 1018)
       case x: PlaceAllBetSend =>
-        MockLog.debug(s"${x.toString}", 1020)
+        MockLog.debug(s"${x.toString}", 1018)
       case x: StatusChang =>
-        MockLog.debug(s"${x.toString}", 1020)
-        MockLog.debug(s"${IsInto.toString}", 1020)
-        MockLog.debug(s"${x.status.toString}", 1020)
+        MockLog.debug(s"${x.toString}", 1018)
+        MockLog.debug(s"${IsInto.toString}", 1018)
+        MockLog.debug(s"${x.status.toString}", 1018)
       /*if(IsInto && x.status == 2)
       {
         //system.scheduler.scheduleOnce(7.seconds) {
-        MockLog.debug("PlaceBet", 1020)
+        MockLog.debug("PlaceBet", 1018)
         val ran1 = (new util.Random).nextInt(32767)
         val BetArea =ran1 % (7)
         val PlaceBetReceive = WrapperBaccaratMessage().withPlaceBetReceive(pb.baccarat.PlaceBetReceive(0L,BetArea,500L,1))
-        Mock1020.sendRoomDispatch(FlowMeta(1020, "6", 1, "32", 2), PlaceBetReceive)
+        Mock1018.sendRoomDispatch(FlowMeta(1018, "6", 1, "32", 2), PlaceBetReceive)
         //}
       }*/
       case x:GameStart =>
-        MockLog.debug(s"${x.toString}", 1020)
+        MockLog.debug(s"${x.toString}", 1018)
       case x:GameEnd=>
-        MockLog.debug(s"${x.toString}", 1020)
+        MockLog.debug(s"${x.toString}", 1018)
       case x: TableCardArray =>
-        MockLog.debug(s"${x.toString}", 1020)
+        MockLog.debug(s"${x.toString}", 1018)
       case x: PlayScore =>
-        MockLog.debug(s"${x.toString}", 1020)
+        MockLog.debug(s"${x.toString}", 1018)
       case x: RecordRoadArrayInt =>
-        MockLog.debug(s"${x.toString}", 1020)
+        MockLog.debug(s"${x.toString}", 1018)
       case x: RecordRoadInt =>
-        MockLog.debug(s"${x.toString}", 1020)
+        MockLog.debug(s"${x.toString}", 1018)
       case x: GameRecordSend =>
-        MockLog.debug(s"${x.toString}", 1020)
+        MockLog.debug(s"${x.toString}", 1018)
       case x:RecordRoadArrayString =>
-        MockLog.debug(s"${x.toString}", 1020)
+        MockLog.debug("RecordRoadArrayString", 1018)
+            MockLog.debug(s"${x.recordRoad}", 1018)
+
+        MockLog.debug(s"${x.toString}", 1018)
       case x:RecordRoadString=>
-        MockLog.debug(s"${x.toString}", 1020)
+        MockLog.debug(s"${x.toString}", 1018)
       case x:UserStateChange =>
-        MockLog.debug(s"${x.toString}", 1020)
+        MockLog.debug(s"${x.toString}", 1018)
       case x:TipsMessage=>
-        MockLog.debug(s"${x.toString}", 1020)
+        MockLog.debug(s"${x.toString}", 1018)
     }
   })
 
@@ -283,7 +290,7 @@ object TestZYC extends App {
 
   MockWeb.observe("1012", (_, m) =>
     m("msg") match {
-      //用户进入百家乐
+      //用户进入百家乐http://127.0.0.1:9999/1012?msg=DiceUserSitDownReceive&userId=6&roomId=32
       case "UserSitDownReceive" =>  //URL: http://127.0.0.1:9999/1012?msg=UserSitDownReceive&userId=?&roomId=?
         val userId = m("userId")
         val roomId = m("roomId")
@@ -435,33 +442,33 @@ object TestZYC extends App {
     }
   )
 
-  MockWeb.observe("1020", (_, m) =>
+  MockWeb.observe("1018", (_, m) =>
     m("msg") match {
-      //用户进入龙虎斗
-      case "BullFightUserSitDownReceive" =>  //URL: http://127.0.0.1:9999/1020?msg=BullFightUserSitDownReceive&userId=?&roomId=?
+      //用户进入百人牛牛
+      case "BullFightUserSitDownReceive" =>  //URL: http://127.0.0.1:9999/1018?msg=BullFightUserSitDownReceive&userId=?&roomId=?
         val userId = m("userId")
         val roomId = m("roomId")
-        MockLog.debug(s"${userId.toString}", 1020)
+        MockLog.debug(s"${userId.toString}", 1018)
         if(userId.toInt == 6) {
           IsInto = true
-          MockLog.debug(s"${IsInto.toString}", 1020)
+          MockLog.debug(s"${IsInto.toString}", 1018)
         }
         val UserSitDownReceive = WrapperBullFightMessage().withUserSitDownReceive(pb.bullFight.BullFightUserSitDownReceive(userId.toLong, roomId.toInt))
-        Mock1020.sendRoomDispatch(FlowMeta(1020, userId, 1, roomId, 2), UserSitDownReceive)
+        Mock1018.sendRoomDispatch(FlowMeta(1018, userId, 1, roomId, 2), UserSitDownReceive)
       //用户申请庄家
-      case "BullFightApplyBankerReceive" =>  //URL: http://127.0.0.1:9999/1020?msg=BullFightApplyBankerReceive&userId=?&roomId=?
+      case "BullFightApplyBankerReceive" =>  //URL: http://127.0.0.1:9999/1018?msg=BullFightApplyBankerReceive&userId=?&roomId=?
         val userId = m("userId")
         val roomId = m("roomId")
         val ApplyBankerReceive = WrapperBullFightMessage().withApplyBankerReceive(pb.bullFight.BullFightApplyBankerReceive(userId.toLong))
-        Mock1020.sendRoomDispatch(FlowMeta(1020, userId, 1, roomId, 2), ApplyBankerReceive)
+        Mock1018.sendRoomDispatch(FlowMeta(1018, userId, 1, roomId, 2), ApplyBankerReceive)
       //用户下庄
-      case "BullFightCancelBanker" =>  //URL: http://127.0.0.1:9999/1020?msg=BullFightCancelBanker&userId=?&roomId=?&ChairID=?&ListApplyCount=?
+      case "BullFightCancelBanker" =>  //URL: http://127.0.0.1:9999/1018?msg=BullFightCancelBanker&userId=?&roomId=?&ChairID=?&ListApplyCount=?
         val userId = m("userId")
         val roomId = m("roomId")
         val CancelBanker = WrapperBullFightMessage().withCancelBanker(pb.bullFight.BullFightCancelBanker(userId.toLong))
-        Mock1020.sendRoomDispatch(FlowMeta(1020, userId, 1, roomId, 2), CancelBanker)
+        Mock1018.sendRoomDispatch(FlowMeta(1018, userId, 1, roomId, 2), CancelBanker)
       //用户下注
-      case "BullFightPlaceBetReceive" =>  //URL: http://127.0.0.1:9999/1020?msg=BullFightPlaceBetReceive&userId=?&roomId=?&ChairID=?&BetArea=?&BetScore=?&AndroidUser=?
+      case "BullFightPlaceBetReceive" =>  //URL: http://127.0.0.1:9999/1018?msg=BullFightPlaceBetReceive&userId=?&roomId=?&ChairID=?&BetArea=?&BetScore=?&AndroidUser=?
         val userId = m("userId")
         val roomId = m("roomId")
         val ChairID = m("ChairID")
@@ -469,18 +476,18 @@ object TestZYC extends App {
         val BetScore = m("BetScore")
         val AndroidUser = m("AndroidUser")
         val PlaceBetReceive = WrapperBullFightMessage().withPlaceBetReceive(pb.bullFight.BullFightPlaceBetReceive(ChairID.toInt,BetArea.toInt,BetScore.toLong,AndroidUser.toInt))
-        Mock1020.sendRoomDispatch(FlowMeta(1020, userId, 1, roomId, 2), PlaceBetReceive)
-      //用户退出百家乐
-      case "BullFightUserStandUp" =>  //URL: http://127.0.0.1:9999/1020?msg=BullFightUserStandUp&userId=?&roomId=?&ChairID=?
-        MockLog.debug(s"${m.toString}", 1020)
+        Mock1018.sendRoomDispatch(FlowMeta(1018, userId, 1, roomId, 2), PlaceBetReceive)
+      //用户退出百人牛牛
+      case "BullFightUserStandUp" =>  //URL: http://127.0.0.1:9999/1018?msg=BullFightUserStandUp&userId=?&roomId=?&ChairID=?
+        MockLog.debug(s"${m.toString}", 1018)
         val ChairID = m("ChairID")
         val userId = m("userId")
         val roomId = m("roomId")
         val UserStandUp = WrapperBullFightMessage().withUserStandUp(pb.bullFight.BullFightUserStandUp(ChairID.toInt))
-        MockUser.send(MPB.toByte(FlowMeta(1020, userId, 1, roomId, 2), UserStandUp))
-        MockLog.debug(s"${UserStandUp.toString}", 1020)
+        MockUser.send(MPB.toByte(FlowMeta(1018, userId, 1, roomId, 2), UserStandUp))
+        MockLog.debug(s"${UserStandUp.toString}", 1018)
       case "b" =>
-        MockLog.debug(s"${m("code2")}", 1020)
+        MockLog.debug(s"${m("code2")}", 1018)
     }
   )
 
