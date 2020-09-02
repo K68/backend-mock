@@ -22,6 +22,7 @@ object MockUser {
   var authenticationRefreshToken: String = ""
   var accountId = ""
   var outActor: Option[ActorRef[Message]] = None
+  
 
   def setupMockUser(userName: String, password: String, loginURL: String, socketURL: String): Unit = {
     postJson(loginURL, Json.obj("phoneNumber"->userName,"loginPassword"->password,"logoutOthers"->true))().map {

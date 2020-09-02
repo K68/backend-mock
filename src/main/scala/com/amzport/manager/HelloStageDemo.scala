@@ -1,7 +1,5 @@
 package com.amzport.manager
 
-
-import com.amzport.mock.MPB.FlowMeta
 import javafx.event.{ActionEvent, EventHandler}
 import javafx.scene.input.KeyEvent
 import scalafx.application.JFXApp
@@ -10,39 +8,10 @@ import scalafx.scene.Scene
 import scalafx.scene.control.{Button, Label, PasswordField, TextField}
 import scalafx.scene.layout.{GridPane, HBox}
 import scalafx.scene.text.{Font, FontWeight, Text}
-import com.amzport.mock.space.Mock000
-import com.amzport.mock.{MockAdmin, MockLog}
-import pb.admin.{AllRoomInfoListRsp, HistoryProfitAndLossListRsp, LiveProfitAndLossListRsp, LogonUserAmount, ManagerTipsInfo}
-
-
+import com.amzport.mock.MockAdmin
 
 
 object HelloStageDemo extends JFXApp {
-  var logonUserNum = ""
-  var tipInfo = ""
-
-  Mock000.observe((flowMeta,msg) => {
-    msg match {
-      case x:LogonUserAmount =>
-        MockLog.debug(s"${x.toString}", 1002)
-      case x:ManagerTipsInfo =>
-        tipInfo = x.toString
-        println(tipInfo)
-        MockLog.debug(s"${x.toString}",1002)
-      case x:AllRoomInfoListRsp =>
-        MockLog.debug(s"${x.toString}",1002)
-      case x:HistoryProfitAndLossListRsp =>
-        MockLog.debug(s"${x.toString}", 1002)
-      case x:LiveProfitAndLossListRsp =>
-        MockLog.debug(s"${x.toString}", 1002)
-    }
-  })
-
-  def hello():Unit = {
-    println("hello")
-    val window = new TabStage()
-//    loginStage.close()
-  }
 
   val loginStage = new JFXApp.PrimaryStage {
     title.value = "ScalaFX Welcome"
@@ -68,14 +37,20 @@ object HelloStageDemo extends JFXApp {
   val pwBox = new PasswordField()
   grid.add(pwBox,1,2)
 
-  val loginLabel = new Label("loginURL")
+  val loginLabel = new Label("loginURL:")
   grid.add(loginLabel,0,3)
+  //      http://121.196.58.176/api/auth/login
   val loginContent = new TextField()
+  loginContent.setText("http://121.196.58.176/api/auth/login")
+//  loginContent.setText("http://127.0.0.1:9000/api/auth/login")
   grid.add(loginContent,1,3)
 
-  val socketLabel = new Label("socketURL")
+  val socketLabel = new Label("socketURL:")
   grid.add(socketLabel,0,4)
+  //      ws://121.196.58.176/wsm
   val socketContent = new TextField()
+  socketContent.setText("ws://121.196.58.176/wsm")
+//  socketContent.setText("ws://127.0.0.1:9000/wsm")
   grid.add(socketContent,1,4)
 
   var userNameContent = ""
@@ -99,31 +74,18 @@ object HelloStageDemo extends JFXApp {
   grid.add(btn,1,5)
   btn.setOnAction(new EventHandler[ActionEvent] {
     override def handle(event: ActionEvent): Unit = {
-  //      http://192.168.5.29:9000/api/auth/login
-//      ws://192.168.5.29:9000/wsz
-      println(userNameContent,passwordContent,loginUrlContent,socketUrlContent)
-      MockAdmin.setupMockAdmin(userNameContent,passwordContent,loginUrlContent,socketUrlContent)
-      hello()
+      println(userNameContent,passwordContent,loginContent.getText,socketContent.getText)
+      MockAdmin.setupMockAdmin(userNameContent,passwordContent,loginContent.getText,socketContent.getText)
     }
   })
   pwBox.setOnKeyPressed(new EventHandler[KeyEvent] {
     override def handle(event: KeyEvent): Unit = {
       if (event.getCode().getName == "Enter") {
-        val window = new TabStage
-        loginStage.close()
+        MockAdmin.setupMockAdmin(userNameContent,passwordContent,loginContent.getText,socketContent.getText)
       }
     }
   })
 
-  val btn2 = new Button("查询注册用户数量")
-  grid.add(btn2,1,6)
-  btn2.setOnAction(new EventHandler[ActionEvent] {
-    override def handle(event: ActionEvent): Unit = {
-      println(MockAdmin.accountId)
-      val logonUser = pb.admin.QueryLogonUser(MockAdmin.accountId.toLong)
-      Mock000.sendQueryLogonUser(FlowMeta(1002, MockAdmin.accountId, 1, "1", 2),logonUser)
-    }
-  })
 
   val hbBth = new HBox(10)
   hbBth.setAlignment(Pos.BottomRight)
